@@ -39,6 +39,7 @@ Developing custom web applications, business websites, and software solutions fo
 
 ### Languages
 - Python
+- Java
 - JavaScript
 - C
 - C++
