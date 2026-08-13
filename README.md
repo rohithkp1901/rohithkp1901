@@ -3,7 +3,11 @@
 <!-- ========================================================= -->
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:020617,50:0f172a,100:0891b2&text=ROHITH%20K%20P&fontSize=64&fontColor=ffffff&fontAlignY=38&animation=fadeIn" width="100%" />
+  <img
+    src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:020617,50:0f172a,100:0891b2&text=ROHITH%20K%20P&fontSize=64&fontColor=ffffff&fontAlignY=38&fontName=Orbitron&animation=fadeIn"
+    width="100%"
+    alt="ROHITH K P"
+  />
 </p>
 
 <p align="center">
@@ -389,12 +393,12 @@ I develop customized digital solutions for **Companies · Entrepreneurs · Busin
 
 # `10` — Publications
 
-### 🌡️ Cold Storage System
+### 🌡️ Smart Cold Storage System
 **IJCRT — 2023**
 
 IoT-based monitoring and automation system for cold-storage environments.
 
-### ✈️ Travel Service System
+### ✈️ Travel Support System
 **IJISRT — 2022**
 
 Web-based travel service management solution.
