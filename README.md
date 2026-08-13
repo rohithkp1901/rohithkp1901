@@ -177,20 +177,12 @@ alt="GitHub Analytics"
 
 # `05` — Development Activity
 
-<p align="center">
-
-`████████████████████████████████`  
-`████████████████████████████████`  
-`████████████████████████████████`
-
-</p>
-
-<p align="center">
-
-<sub>Consistent development • Project building • Continuous learning</sub>
-
-</p>
-
+FULL STACK DEVELOPMENT    ████████████████████
+BACKEND ENGINEERING       ██████████████████░░
+FRONTEND DEVELOPMENT      █████████████████░░░
+API DEVELOPMENT            ████████████████░░░░
+IoT & AUTOMATION           ███████████████░░░░░
+CLOUD & DEPLOYMENT         █████████████░░░░░░░
 ---
 
 # `06` — Contribution Activity
