@@ -38,27 +38,9 @@
 
 # `01` — SYSTEM PROFILE
 
-root@rohithkp:~$ cat /etc/developer.conf
-
-╔══════════════════════════════════════════════════════════╗
-║                    DEVELOPER PROFILE                    ║
-╠══════════════════════════════════════════════════════════╣
-║                                                          ║
-║  NAME       : Rohith K P                                 ║
-║  ROLE       : Software Developer                         ║
-║  MODE       : FULL STACK                                 ║
-║  STATUS     : ONLINE                                     ║
-║                                                          ║
-║  FRONTEND   : React / Angular                            ║
-║  BACKEND    : Python / Django / Flask                   ║
-║  DATABASE   : MySQL / SQLite / Firebase                 ║
-║  API        : REST / JSON                               ║
-║  IoT        : ESP32 / Raspberry Pi                      ║
-║                                                          ║
-║  CURRENT    : ALEMS                                      ║
-║                                                          ║
-╚══════════════════════════════════════════════════════════╝
-<p align="center"> <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=15&duration=2500&pause=800&color=00FF41&center=true&vCenter=true&width=750&lines=root%40rohithkp%3A~%24+systemctl+status+developer;●+developer.service+-+ACTIVE;●+coding.service+-+ACTIVE;●+learning.service+-+ACTIVE;●+building.service+-+ACTIVE" /> </p>
+<p align="center">
+  <img src="./assets/system-profile.svg" width="900" alt="Rohith K P System Profile">
+</p>
 02 — SKILL MATRIX
 root@rohithkp:~$ ls /skills
 <table align="center"> <tr> <td align="center">
