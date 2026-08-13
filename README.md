@@ -119,46 +119,24 @@ IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
 
 # `08` — FREELANCE MODE
 
-```text
-root@rohithkp:~$ services --list
-
-[01] BUSINESS WEBSITES
-[02] CUSTOM WEB APPLICATIONS
-[03] MANAGEMENT SYSTEMS
-[04] REST API DEVELOPMENT
-[05] EDUCATIONAL PLATFORMS
-[06] IoT APPLICATIONS
-[07] CUSTOM SOFTWARE
-[08] INVITATION WEBSITES
-```
-
-**Companies · Entrepreneurs · Businesses · Startups · Educational Organizations · Personal Brands**
+<div align="center">
+<img src="./assets/freelance-mode.svg" width="950" alt="Animated freelance mode" />
+</div>
 
 ---
 
 # `09` — LEARNING QUEUE
 
-```text
-[01] Advanced System Design     [LOADING...]
-[02] Cloud Deployment           [LOADING...]
-[03] AI Integration             [LOADING...]
-[04] Docker                     [LOADING...]
-[05] Scalable Architecture      [LOADING...]
-```
+<div align="center">
+<img src="./assets/learning-queue.svg" width="950" alt="Animated learning queue" />
+</div>
 
 ---
 
 # `10` — ENGINEERING PHILOSOPHY
 
 <div align="center">
-
-```text
-KEEP LEARNING.
-KEEP BUILDING.
-KEEP TESTING.
-KEEP IMPROVING.
-```
-
+<img src="./assets/engineering-philosophy.svg" width="950" alt="Animated engineering philosophy" />
 </div>
 
 ---
@@ -166,6 +144,7 @@ KEEP IMPROVING.
 # `11` — CONNECT
 
 <div align="center">
+<img src="./assets/connect-panel.svg" width="950" alt="Animated connection panel" />
 
 <a href="https://rohith-kp.vercel.app/">🌐 PORTFOLIO</a> &nbsp; · &nbsp;
 <a href="https://linkedin.com/in/rohith-k-p">💼 LINKEDIN</a> &nbsp; · &nbsp;
