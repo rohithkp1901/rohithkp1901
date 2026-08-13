@@ -1,0 +1,61 @@
+<svg width="28" height="28" viewBox="0 0 28 28"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Glow -->
+  <circle
+    cx="14"
+    cy="14"
+    r="8"
+    fill="#eab308"
+    opacity="0.85"
+    filter="url(#glow)">
+
+    <animate
+      attributeName="opacity"
+      dur="0.8s"
+      values="0.9;0.9;0;0"
+      keyTimes="0;0.5;0.5;1"
+      repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Bulb -->
+  <circle
+    cx="14"
+    cy="14"
+    r="5"
+    fill="#eab308">
+
+    <animate
+      attributeName="opacity"
+      dur="0.8s"
+      values="1;1;0;0"
+      keyTimes="0;0.5;0.5;1"
+      repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Highlight -->
+  <circle
+    cx="12.5"
+    cy="12.5"
+    r="1.5"
+    fill="#fef9c3">
+
+    <animate
+      attributeName="opacity"
+      dur="0.8s"
+      values="1;1;0;0"
+      keyTimes="0;0.5;0.5;1"
+      repeatCount="indefinite"/>
+  </circle>
+
+</svg>
