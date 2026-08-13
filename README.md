@@ -49,7 +49,7 @@ CURRENT    : ALEMS
 # `03` — CURRENT PROJECT
 
 <div align="center">
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=22&duration=2800&pause=700&color=00FF41&center=true&vCenter=true&width=850&lines=ALEMS;Academic+Learning+%26+Examination+Management+System;ANGULAR+%2B+FLASK+%2B+PYTHON+%2B+MYSQL" alt="ALEMS" />
+<img src="./assets/current-project.svg" width="950" alt="Animated current project" />
 </div>
 
 **ALEMS** is an Academic Learning & Examination Management System for academic workflows, examinations, marks, students, teachers and administration.
@@ -59,13 +59,7 @@ CURRENT    : ALEMS
 # `04` — GITHUB ANALYTICS
 
 <div align="center">
-<img src="./assets/github-analytics.svg" width="900" alt="Animated GitHub analytics" />
-</div>
-
-<div align="center">
-
-**38+ REPOSITORIES** &nbsp; · &nbsp; **198 CONTRIBUTIONS** &nbsp; · &nbsp; **ACTIVE DEVELOPMENT**
-
+<img src="./assets/github-analytics-animated.svg" width="950" alt="Animated GitHub analytics" />
 </div>
 
 ---
@@ -73,26 +67,7 @@ CURRENT    : ALEMS
 # `05` — DEVELOPMENT ACTIVITY
 
 <div align="center">
-<strong>⚡ ENGINEERING FOCUS</strong>
-
-<table>
-<tr><th>AREA</th><th>TECHNOLOGIES</th><th>STATUS</th></tr>
-<tr><td>Full Stack Development</td><td>React · Angular · Django · Flask</td><td><img src="./assets/active-bulb.svg" width="20" alt="Active" /> ACTIVE</td></tr>
-<tr><td>Backend Engineering</td><td>Python · Django · Flask · REST APIs</td><td><img src="./assets/active-bulb.svg" width="20" alt="Active" /> ACTIVE</td></tr>
-<tr><td>Frontend Development</td><td>React · Angular · JavaScript</td><td><img src="./assets/active-bulb.svg" width="20" alt="Active" /> ACTIVE</td></tr>
-<tr><td>API Development</td><td>REST · JSON · Axios · Postman</td><td><img src="./assets/active-bulb.svg" width="20" alt="Active" /> ACTIVE</td></tr>
-<tr><td>IoT & Automation</td><td>ESP32 · Raspberry Pi · Firebase</td><td><img src="./assets/active-bulb.svg" width="20" alt="Active" /> ACTIVE</td></tr>
-<tr><td>Cloud & Deployment</td><td>Firebase · Docker · GitHub</td><td><img src="./assets/learning-bulb.svg" width="20" alt="Learning" /> LEARNING</td></tr>
-</table>
-
-```text
-BUILDING  ████████████████████  100%
-LEARNING  ██████████████████░░   90%
-TESTING   ████████████████░░░░   80%
-SHIPPING  ██████████████░░░░░░   70%
-```
-
-<strong>IDEA → DESIGN → BUILD → TEST → IMPROVE → SHIP</strong>
+<img src="./assets/development-activity.svg" width="950" alt="Animated development activity" />
 </div>
 
 ---
