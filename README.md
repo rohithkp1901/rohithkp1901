@@ -4,7 +4,7 @@
 
 <p align="center">
   <img
-    src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:020617,50:0f172a,100:0891b2&text=ROHITH%20K%20P&fontSize=64&fontColor=ffffff&fontAlignY=38&fontName=Orbitron&animation=fadeIn"
+    src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:020617,50:0f172a,100:0891b2&text=ROHITH%20K%20P&fontSize=64&fontColor=ffffff&fontAlignY=38&fontName=Special%20Elite&animation=fadeIn"
     width="100%"
     alt="ROHITH K P"
   />
@@ -428,9 +428,23 @@ Web-based travel service management solution.
 # `13` — Let's Connect
 
 <p align="center">
-<a href="https://rohith-kp.vercel.app/"><img src="https://img.shields.io/badge/PORTFOLIO-0891B2?style=for-the-badge&logo=googlechrome&logoColor=white" /></a>
-<a href="https://linkedin.com/in/rohith-k-p"><img src="https://img.shields.io/badge/LINKEDIN-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
-<a href="mailto:rohithkp549@gmail.com"><img src="https://img.shields.io/badge/EMAIL-EA4335?style=for-the-badge&logo=gmail&logoColor=white" /></a>
+
+<a href="https://rohith-kp.vercel.app/">
+<img src="https://img.shields.io/badge/PORTFOLIO-0891B2?style=for-the-badge&logo=googlechrome&logoColor=white" />
+</a>
+
+<a href="https://linkedin.com/in/rohith-k-p">
+<img src="https://img.shields.io/badge/LINKEDIN-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+</a>
+
+<a href="https://www.instagram.com/r__o_h_i_t__h/">
+<img src="https://img.shields.io/badge/INSTAGRAM-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
+</a>
+
+<a href="mailto:rohithkp549@gmail.com">
+<img src="https://img.shields.io/badge/EMAIL-EA4335?style=for-the-badge&logo=gmail&logoColor=white" />
+</a>
+
 </p>
 
 <p align="center">
