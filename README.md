@@ -41,7 +41,7 @@ CURRENT    : ALEMS
 # `02` — TECHNICAL STACK
 
 <div align="center">
-<img src="https://skillicons.dev/icons?i=python,java,c,cpp,js,html,css,react,angular,django,flask,mysql,sqlite,firebase,git,github,docker,postman,raspberrypi,arduino" alt="Technical stack" />
+<img src="./assets/technical-stack.svg" width="950" alt="Animated technical stack" />
 </div>
 
 ---
