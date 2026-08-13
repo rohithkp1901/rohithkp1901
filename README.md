@@ -191,37 +191,49 @@ alt="GitHub Analytics"
 <tr>
 <td>Full Stack Development</td>
 <td>React · Angular · Django · Flask</td>
-<td>🟢 Active</td>
+<td>
+<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+</td>
 </tr>
 
 <tr>
 <td>Backend Engineering</td>
 <td>Python · Django · Flask · REST APIs</td>
-<td>🟢 Active</td>
+<td>
+<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+</td>
 </tr>
 
 <tr>
 <td>Frontend Development</td>
 <td>React · Angular · JavaScript</td>
-<td>🟢 Active</td>
+<td>
+<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+</td>
 </tr>
 
 <tr>
 <td>API Development</td>
 <td>REST · JSON · Axios · Postman</td>
-<td>🟢 Active</td>
+<td>
+<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+</td>
 </tr>
 
 <tr>
 <td>IoT & Automation</td>
 <td>ESP32 · Raspberry Pi · Firebase</td>
-<td>🟢 Active</td>
+<td>
+<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+</td>
 </tr>
 
 <tr>
 <td>Cloud & Deployment</td>
 <td>Firebase · Docker · GitHub</td>
-<td>🟡 Learning</td>
+<td>
+<img src="https://img.shields.io/badge/●-LEARNING-EAB308?style=flat-square&labelColor=0D1117" />
+</td>
 </tr>
 
 </table>
@@ -240,10 +252,6 @@ alt="GitHub Analytics"
 &nbsp;→&nbsp;
 <strong>SHIP</strong>
 
-</p>
-
-<p align="center">
-<em>Continuous development. Continuous improvement.</em>
 </p>
 ---
 
