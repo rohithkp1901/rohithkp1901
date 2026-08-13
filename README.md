@@ -179,25 +179,27 @@ Animated portfolio showcasing projects, skills, services and freelance work.
 
 ---
 
-# `07` — Contribution Matrix
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/output/github-contribution-grid-snake.svg" width="100%" alt="Contribution Snake" />
-</p># `07` — Contribution Activity
+# `07` — Contribution Activity
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/output/github-contribution-grid-snake.svg"
-    width="100%"
-    alt="GitHub Contribution Snake"
+    src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=18&duration=2500&pause=900&color=22D3EE&center=true&vCenter=true&width=800&lines=BUILDING+%E2%86%92+COMMITTING+%E2%86%92+IMPROVING;Consistent+code.+Continuous+growth."
+    alt="Contribution Activity"
   />
 </p>
 
 <p align="center">
-  <img
-    src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=16&duration=3000&pause=1200&color=64748B&center=true&vCenter=true&width=700&lines=Consistency+%E2%86%92+Contribution+%E2%86%92+Growth;Every+commit+is+a+step+forward."
-    alt="Contribution Message"
-  />
+
+`2026` &nbsp;•&nbsp; `ACTIVE DEVELOPMENT` &nbsp;•&nbsp; `OPEN SOURCE` &nbsp;•&nbsp; `CONTINUOUS LEARNING`
+
+</p>
+
+---
+
+<p align="center">
+
+**Code → Test → Fix → Commit → Repeat**
+
 </p>
 
 ---
