@@ -1,25 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="280" viewBox="0 0 1000 280">
-<rect width="1000" height="280" rx="12" fill="#0b0f14"/>
-<rect x="1" y="1" width="998" height="278" rx="11" fill="none" stroke="#27313b"/>
-<text x="32" y="38" fill="#e6edf3" font-family="monospace" font-size="20" font-weight="bold">06 — DEVELOPMENT LOOP</text>
-<circle cx="935" cy="31" r="6" fill="#00ff41"><animate attributeName="opacity" values="1;0.15;1" dur="0.8s" repeatCount="indefinite"/></circle>
-<text x="950" y="36" fill="#00ff41" font-family="monospace" font-size="11">LIVE</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320" role="img" aria-label="Animated professional development loop">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070a0f"/><stop offset="0.5" stop-color="#0d141b"/><stop offset="1" stop-color="#070a0f"/></linearGradient>
+ <linearGradient id="green" x1="0" x2="1"><stop stop-color="#00ff41"/><stop offset="0.5" stop-color="#b4ffc5"/><stop offset="1" stop-color="#00ff41"/></linearGradient>
+ <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="smallGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#18212a" stroke-width="1"/></pattern>
+</defs>
+
+<rect width="1000" height="320" rx="14" fill="url(#bg)"/>
+<rect x="1" y="1" width="998" height="318" rx="13" fill="url(#grid)" opacity="0.6"/>
+<rect x="1" y="1" width="998" height="318" rx="13" fill="none" stroke="#2b3742"/>
+
+<!-- header -->
+<text x="30" y="38" fill="#e7eef5" font-family="monospace" font-size="20" font-weight="700">06 — DEVELOPMENT LOOP</text>
+<text x="30" y="59" fill="#62717e" font-family="monospace" font-size="10">SOFTWARE DELIVERY PIPELINE // REAL-TIME SYSTEM VIEW</text>
+<circle cx="930" cy="31" r="5" fill="#00ff41" filter="url(#glow)"><animate attributeName="opacity" values="1;.12;1" dur=".7s" repeatCount="indefinite"/></circle>
+<text x="944" y="36" fill="#00ff41" font-family="monospace" font-size="11">LIVE</text>
+
+<!-- moving scan beam -->
+<rect x="25" y="68" width="950" height="1" fill="#00ff41" opacity=".35"><animate attributeName="y" values="68;265;68" dur="3s" repeatCount="indefinite"/></rect>
+
+<!-- connectors -->
+<g fill="none" stroke="#00ff41" stroke-width="2" stroke-dasharray="6 8" opacity=".75">
+ <path d="M170 135H205"/><path d="M365 135H400"/><path d="M560 135H595"/><path d="M755 135H790"/>
+</g>
+<g fill="#00ff41" filter="url(#smallGlow)">
+ <circle cy="135" r="3"><animate attributeName="cx" values="170;205" dur=".45s" repeatCount="indefinite"/></circle>
+ <circle cy="135" r="3"><animate attributeName="cx" values="365;400" dur=".45s" begin=".12s" repeatCount="indefinite"/></circle>
+ <circle cy="135" r="3"><animate attributeName="cx" values="560;595" dur=".45s" begin=".24s" repeatCount="indefinite"/></circle>
+ <circle cy="135" r="3"><animate attributeName="cx" values="755;790" dur=".45s" begin=".36s" repeatCount="indefinite"/></circle>
+</g>
+
+<!-- pipeline nodes -->
 <g font-family="monospace" text-anchor="middle">
-<g><rect x="35" y="85" width="140" height="70" rx="7" fill="#101820" stroke="#3a4652"/><text x="105" y="113" fill="#00ff41" font-size="11">01</text><text x="105" y="140" fill="#f0f5fa" font-size="18" font-weight="bold">IDEA</text></g>
-<g><rect x="215" y="85" width="140" height="70" rx="7" fill="#101820" stroke="#3a4652"/><text x="285" y="113" fill="#00ff41" font-size="11">02</text><text x="285" y="140" fill="#f0f5fa" font-size="18" font-weight="bold">DESIGN</text></g>
-<g><rect x="395" y="85" width="140" height="70" rx="7" fill="#101820" stroke="#3a4652"/><text x="465" y="113" fill="#00ff41" font-size="11">03</text><text x="465" y="140" fill="#f0f5fa" font-size="18" font-weight="bold">BUILD</text></g>
-<g><rect x="575" y="85" width="140" height="70" rx="7" fill="#101820" stroke="#3a4652"/><text x="645" y="113" fill="#00ff41" font-size="11">04</text><text x="645" y="140" fill="#f0f5fa" font-size="18" font-weight="bold">TEST</text></g>
-<g><rect x="755" y="85" width="140" height="70" rx="7" fill="#101820" stroke="#3a4652"/><text x="825" y="113" fill="#00ff41" font-size="11">05</text><text x="825" y="140" fill="#f0f5fa" font-size="18" font-weight="bold">SHIP</text></g>
+ <g><rect x="30" y="96" width="140" height="78" rx="8" fill="#0d151c" stroke="#34424e"/>
+  <circle cx="50" cy="116" r="4" fill="#00ff41"/><text x="100" y="119" fill="#6d7d89" font-size="10">01</text><text x="100" y="151" fill="#f2f6fa" font-size="18" font-weight="700">IDEA</text>
+ </g>
+ <g><rect x="225" y="96" width="140" height="78" rx="8" fill="#0d151c" stroke="#34424e"/>
+  <circle cx="245" cy="116" r="4" fill="#00ff41"/><text x="295" y="119" fill="#6d7d89" font-size="10">02</text><text x="295" y="151" fill="#f2f6fa" font-size="18" font-weight="700">DESIGN</text>
+ </g>
+ <g><rect x="420" y="96" width="140" height="78" rx="8" fill="#0d151c" stroke="#00ff41"/>
+  <circle cx="440" cy="116" r="4" fill="#00ff41" filter="url(#smallGlow)"><animate attributeName="r" values="3;6;3" dur="1s" repeatCount="indefinite"/></circle><text x="490" y="119" fill="#00ff41" font-size="10">03 // ACTIVE</text><text x="490" y="151" fill="#ffffff" font-size="18" font-weight="700">BUILD</text>
+  <rect x="420" y="96" width="140" height="78" rx="8" fill="none" stroke="#00ff41" filter="url(#glow)"><animate attributeName="opacity" values=".9;.12;.9" dur="1.2s" repeatCount="indefinite"/></rect>
+ </g>
+ <g><rect x="615" y="96" width="140" height="78" rx="8" fill="#0d151c" stroke="#34424e"/>
+  <circle cx="635" cy="116" r="4" fill="#00ff41"/><text x="685" y="119" fill="#6d7d89" font-size="10">04</text><text x="685" y="151" fill="#f2f6fa" font-size="18" font-weight="700">TEST</text>
+ </g>
+ <g><rect x="810" y="96" width="140" height="78" rx="8" fill="#0d151c" stroke="#34424e"/>
+  <circle cx="830" cy="116" r="4" fill="#00ff41"/><text x="880" y="119" fill="#6d7d89" font-size="10">05</text><text x="880" y="151" fill="#f2f6fa" font-size="18" font-weight="700">SHIP</text>
+ </g>
 </g>
-<g stroke="#00ff41" stroke-width="2" stroke-dasharray="7 8">
-<path d="M175 120H215"/><path d="M355 120H395"/><path d="M535 120H575"/><path d="M715 120H755"/>
+
+<!-- execution rail -->
+<line x1="60" y1="220" x2="940" y2="220" stroke="#26323d" stroke-width="2"/>
+<line x1="60" y1="220" x2="940" y2="220" stroke="#00ff41" stroke-width="1" opacity=".35" stroke-dasharray="3 12"><animate attributeName="stroke-dashoffset" from="0" to="30" dur=".6s" repeatCount="indefinite"/></line>
+<circle cy="220" r="7" fill="#00ff41" filter="url(#glow)"><animate attributeName="cx" values="60;940;60" dur="4.2s" repeatCount="indefinite"/></circle>
+<g fill="#00ff41" font-family="monospace" font-size="9">
+ <text x="60" y="239">START</text><text x="910" y="239">DEPLOY</text>
 </g>
-<g fill="#00ff41">
-<circle cy="120" r="4"><animate attributeName="cx" values="175;215;355;395;535;575;715;755" dur="3.2s" repeatCount="indefinite"/></circle>
-</g>
-<rect x="395" y="85" width="140" height="70" rx="7" fill="none" stroke="#00ff41" stroke-width="2"><animate attributeName="opacity" values="1;0.25;1" dur="1s" repeatCount="indefinite"/></rect>
-<line x1="50" y1="205" x2="950" y2="205" stroke="#27313b"/>
-<circle cx="50" cy="205" r="5" fill="#00ff41"><animate attributeName="cx" values="50;950;50" dur="4s" repeatCount="indefinite"/></circle>
-<text x="500" y="235" text-anchor="middle" fill="#00ff41" font-family="monospace" font-size="15">IDEA → DESIGN → BUILD → TEST → DEBUG → IMPROVE → SHIP</text>
-<text x="500" y="258" text-anchor="middle" fill="#71808d" font-family="monospace" font-size="11">CONTINUOUS DELIVERY // CONTINUOUS IMPROVEMENT // SYSTEM ONLINE</text>
+
+<!-- terminal telemetry -->
+<rect x="30" y="255" width="940" height="42" rx="6" fill="#05080b" stroke="#1e2a34"/>
+<text x="48" y="273" fill="#00ff41" font-family="monospace" font-size="11">root@rohithkp:~$ pipeline --status</text>
+<text x="48" y="290" fill="#a5b2bc" font-family="monospace" font-size="10">IDEA → DESIGN → BUILD → TEST → DEBUG → IMPROVE → SHIP</text>
+<text x="850" y="273" fill="#00ff41" font-family="monospace" font-size="10">ONLINE</text>
+<text x="850" y="290" fill="#65737e" font-family="monospace" font-size="9">AUTO-LOOP</text>
 </svg>
