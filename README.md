@@ -111,12 +111,9 @@ IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
 
 # `07` — PROJECT DATABASE
 
-| PROJECT | STACK | FOCUS |
-|---|---|---|
-| **ALEMS** | Angular · Flask · Python · MySQL | Academic & Examination Management |
-| **Cold Storage Monitoring** | ESP32 · Sensors · Firebase | IoT Monitoring & Automation |
-| **Invitation Website Platform** | HTML · CSS · JavaScript | Custom Event Websites |
-| **Personal Portfolio** | HTML · CSS · JavaScript | Animated Developer Portfolio |
+<div align="center">
+<img src="./assets/project-database.svg" width="950" alt="Animated project database" />
+</div>
 
 ---
 
