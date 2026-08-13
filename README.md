@@ -204,7 +204,6 @@ alt="Contribution Activity"
 
 </p>
 
-```text
 DEVELOPMENT CYCLE
 
         ┌──────────────┐
@@ -228,6 +227,7 @@ DEVELOPMENT CYCLE
         └──────┬───────┘
                │
                └──────────→ REPEAT
+               
 ---
 
 # `07` — Contribution Activity
