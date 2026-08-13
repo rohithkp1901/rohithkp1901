@@ -157,16 +157,38 @@ Animated portfolio showcasing projects, skills, services and freelance work.
 # `04` — GitHub Analytics
 
 <p align="center">
-<img src="https://github-readme-stats.vercel.app/api?username=rohithkp1901&show_icons=true&hide_border=true&theme=tokyonight&include_all_commits=true&count_private=true&rank_icon=github" height="180" />
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=rohithkp1901&layout=compact&hide_border=true&theme=tokyonight&langs_count=8" height="180" />
+
+<img
+src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=19&duration=2800&pause=900&color=22D3EE&center=true&vCenter=true&width=800&lines=CODE+%7C+COMMIT+%7C+BUILD+%7C+IMPROVE;Engineering+through+continuous+development."
+alt="GitHub Analytics"
+/>
+
+</p>
+
+<p align="center">
+
+**38+ Repositories** &nbsp; • &nbsp;
+**198 Contributions** &nbsp; • &nbsp;
+**Active Development**
+
 </p>
 
 ---
 
-# `05` — Contribution Streak
+# `05` — Development Activity
 
 <p align="center">
-<img src="https://streak-stats.demolab.com/?user=rohithkp1901&theme=tokyonight&hide_border=true&border_radius=10" width="700" />
+
+`████████████████████████████████`  
+`████████████████████████████████`  
+`████████████████████████████████`
+
+</p>
+
+<p align="center">
+
+<sub>Consistent development • Project building • Continuous learning</sub>
+
 </p>
 
 ---
@@ -174,9 +196,38 @@ Animated portfolio showcasing projects, skills, services and freelance work.
 # `06` — Contribution Activity
 
 <p align="center">
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=rohithkp1901&theme=tokyo-night&hide_border=true&area=true&radius=10" width="100%" />
+
+<img
+src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=17&duration=2400&pause=800&color=64748B&center=true&vCenter=true&width=750&lines=Every+commit+represents+progress.;Every+project+creates+experience.;Every+challenge+creates+growth."
+alt="Contribution Activity"
+/>
+
 </p>
 
+```text
+DEVELOPMENT CYCLE
+
+        ┌──────────────┐
+        │    IDEA      │
+        └──────┬───────┘
+               ↓
+        ┌──────────────┐
+        │    BUILD     │
+        └──────┬───────┘
+               ↓
+        ┌──────────────┐
+        │     TEST     │
+        └──────┬───────┘
+               ↓
+        ┌──────────────┐
+        │    IMPROVE   │
+        └──────┬───────┘
+               ↓
+        ┌──────────────┐
+        │    DEPLOY    │
+        └──────┬───────┘
+               │
+               └──────────→ REPEAT
 ---
 
 # `07` — Contribution Activity
