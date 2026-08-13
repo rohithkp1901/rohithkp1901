@@ -97,7 +97,27 @@ SHIPPING  ██████████████░░░░░░   70%
 
 ---
 
-# `06` — FREELANCE MODE
+# `06` — DEVELOPMENT LOOP
+
+<div align="center">
+<img src="./assets/development-loop.svg" width="900" alt="Animated development loop" />
+</div>
+
+```text
+IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
+```
+
+---
+
+# `07` — PROJECT DATABASE
+
+<div align="center">
+<img src="./assets/project-database.svg" width="950" alt="Animated project database" />
+</div>
+
+---
+
+# `08` — FREELANCE MODE
 
 ```text
 root@rohithkp:~$ services --list
@@ -116,7 +136,7 @@ root@rohithkp:~$ services --list
 
 ---
 
-# `07` — LEARNING QUEUE
+# `09` — LEARNING QUEUE
 
 ```text
 [01] Advanced System Design     [LOADING...]
@@ -128,7 +148,7 @@ root@rohithkp:~$ services --list
 
 ---
 
-# `08` — ENGINEERING PHILOSOPHY
+# `10` — ENGINEERING PHILOSOPHY
 
 <div align="center">
 
@@ -143,7 +163,7 @@ KEEP IMPROVING.
 
 ---
 
-# `09` — CONNECT
+# `11` — CONNECT
 
 <div align="center">
 
