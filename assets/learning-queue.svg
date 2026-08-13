@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="430" viewBox="0 0 950 430">
+<rect width="950" height="430" rx="14" fill="#010601" stroke="#00ff41" stroke-width="2"/>
+<g font-family="monospace">
+<text x="30" y="40" fill="#00ff41" font-size="21" font-weight="700">09 — LEARNING QUEUE</text>
+<text x="30" y="66" fill="#55ff88" font-size="11">root@rohithkp:~$ learning --status</text>
+<g fill="#06200d">
+<rect x="30" y="95" width="890" height="48" rx="7"/><rect x="30" y="160" width="890" height="48" rx="7"/>
+<rect x="30" y="225" width="890" height="48" rx="7"/><rect x="30" y="290" width="890" height="48" rx="7"/>
+</g>
+<g fill="#00ff41" font-size="13">
+<text x="48" y="125">[01] Advanced System Design</text><text x="48" y="190">[02] Cloud Deployment</text>
+<text x="48" y="255">[03] AI Integration</text><text x="48" y="320">[04] Docker &amp; Containers</text>
+</g>
+<g fill="#55ff88" font-size="11"><text x="700" y="125">LOADING...</text><text x="700" y="190">LOADING...</text><text x="700" y="255">LOADING...</text><text x="700" y="320">LOADING...</text></g>
+<g fill="#00ff41">
+<rect x="48" y="130" width="120" height="4"><animate attributeName="width" values="80;600;180" dur="2.5s" repeatCount="indefinite"/></rect>
+<rect x="48" y="195" width="120" height="4"><animate attributeName="width" values="150;520;220" dur="2.5s" begin=".4s" repeatCount="indefinite"/></rect>
+<rect x="48" y="260" width="120" height="4"><animate attributeName="width" values="60;450;150" dur="2.5s" begin=".8s" repeatCount="indefinite"/></rect>
+<rect x="48" y="325" width="120" height="4"><animate attributeName="width" values="100;700;200" dur="2.5s" begin="1.2s" repeatCount="indefinite"/></rect>
+</g>
+<text x="30" y="385" fill="#00ff41" font-size="11">QUEUE :: ACTIVE • LEARNING SYSTEM ONLINE</text>
+</g></svg>
