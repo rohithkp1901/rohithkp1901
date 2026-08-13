@@ -1,1 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="180" viewBox="0 0 900 180"><rect width="900" height="180" rx="8" fill="#0b0f14"/><g font-family="monospace" font-size="16" fill="#e5edf5"><text x="30" y="32">06 — DEVELOPMENT LOOP</text><g text-anchor="middle"><text x="100" y="90">IDEA</text><text x="260" y="90">DESIGN</text><text x="420" y="90">BUILD</text><text x="580" y="90">TEST</text><text x="740" y="90">DEPLOY</text></g><path d="M135 85H220M295 85H380M455 85H540M615 85H700" stroke="#00ff41" stroke-width="2" stroke-dasharray="12 10"><animate attributeName="stroke-dashoffset" from="22" to="0" dur=".55s" repeatCount="indefinite"/></path><circle cx="100" cy="125" r="5" fill="#00ff41"><animate attributeName="cx" values="100;260;420;580;740;100" dur="4s" repeatCount="indefinite"/></circle><text x="450" y="155" text-anchor="middle" fill="#00ff41">BUILD → TEST → DEBUG → IMPROVE → REPEAT</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="180" viewBox="0 0 900 180" role="img" aria-label="Development Loop">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="900" height="180" rx="8" fill="#0b0f14"/>
+
+  <text x="30" y="32" font-family="monospace" font-size="16" fill="#e5edf5">06 — DEVELOPMENT LOOP</text>
+
+  <g font-family="monospace" font-size="16" text-anchor="middle" fill="#e5edf5">
+    <text x="100" y="88">IDEA</text>
+    <text x="260" y="88">DESIGN</text>
+    <text x="420" y="88">BUILD</text>
+    <text x="580" y="88">TEST</text>
+    <text x="740" y="88">DEPLOY</text>
+  </g>
+
+  <g stroke="#00ff41" stroke-width="2" stroke-dasharray="12 10">
+    <path d="M135 84H220">
+      <animate attributeName="stroke-dashoffset" from="22" to="0" dur="0.55s" repeatCount="indefinite"/>
+    </path>
+    <path d="M295 84H380">
+      <animate attributeName="stroke-dashoffset" from="22" to="0" dur="0.55s" repeatCount="indefinite"/>
+    </path>
+    <path d="M455 84H540">
+      <animate attributeName="stroke-dashoffset" from="22" to="0" dur="0.55s" repeatCount="indefinite"/>
+    </path>
+    <path d="M615 84H700">
+      <animate attributeName="stroke-dashoffset" from="22" to="0" dur="0.55s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <circle cx="100" cy="124" r="6" fill="#00ff41" filter="url(#glow)">
+    <animate attributeName="cx" values="100;260;420;580;740;100" dur="4s" repeatCount="indefinite"/>
+  </circle>
+
+  <text x="450" y="155" text-anchor="middle" font-family="monospace" font-size="14" fill="#00ff41">
+    BUILD → TEST → DEBUG → IMPROVE → REPEAT
+  </text>
+</svg>
