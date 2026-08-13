@@ -1,0 +1,70 @@
+<svg
+  width="32"
+  height="32"
+  viewBox="0 0 32 32"
+  xmlns="http://www.w3.org/2000/svg"
+>
+
+  <defs>
+
+    <!-- Green glow -->
+    <filter id="greenGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+  </defs>
+
+  <!-- Outer glow -->
+  <circle
+    cx="16"
+    cy="16"
+    r="10"
+    fill="#22c55e"
+    filter="url(#greenGlow)"
+  >
+    <animate
+      attributeName="opacity"
+      dur="1s"
+      values="1;1;0;0"
+      keyTimes="0;0.5;0.5;1"
+      repeatCount="indefinite"
+    />
+  </circle>
+
+  <!-- Main bulb -->
+  <circle
+    cx="16"
+    cy="16"
+    r="6"
+    fill="#22c55e"
+  >
+    <animate
+      attributeName="opacity"
+      dur="1s"
+      values="1;1;0;0"
+      keyTimes="0;0.5;0.5;1"
+      repeatCount="indefinite"
+    />
+  </circle>
+
+  <!-- Bright center -->
+  <circle
+    cx="14"
+    cy="14"
+    r="2"
+    fill="#dcfce7"
+  >
+    <animate
+      attributeName="opacity"
+      dur="1s"
+      values="1;1;0;0"
+      keyTimes="0;0.5;0.5;1"
+      repeatCount="indefinite"
+    />
+  </circle>
+
+</svg>
