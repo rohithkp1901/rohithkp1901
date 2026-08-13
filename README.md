@@ -4,9 +4,9 @@
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/rohith-name.svg"
-    width="650"
-    alt="ROHITH K P"
+    src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:020617,50:0f172a,100:0891b2&text=ROHITH%20K%20P&fontSize=64&fontColor=ffffff&fontAlignY=38&fontName=Special%20Elite&animation=fadeIn"
+    width="100%"
+    alt="Rohith K P"
   />
 </p>
 
