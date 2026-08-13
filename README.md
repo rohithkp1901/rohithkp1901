@@ -177,12 +177,74 @@ alt="GitHub Analytics"
 
 # `05` — Development Activity
 
-FULL STACK DEVELOPMENT    ████████████████████
-BACKEND ENGINEERING       ██████████████████░░
-FRONTEND DEVELOPMENT      █████████████████░░░
-API DEVELOPMENT            ████████████████░░░░
-IoT & AUTOMATION           ███████████████░░░░░
-CLOUD & DEPLOYMENT         █████████████░░░░░░░
+<p align="center">
+  <strong>⚡ ENGINEERING FOCUS</strong>
+</p>
+
+<table align="center">
+<tr>
+<th>Area</th>
+<th>Technologies</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>Full Stack Development</td>
+<td>React · Angular · Django · Flask</td>
+<td>🟢 Active</td>
+</tr>
+
+<tr>
+<td>Backend Engineering</td>
+<td>Python · Django · Flask · REST APIs</td>
+<td>🟢 Active</td>
+</tr>
+
+<tr>
+<td>Frontend Development</td>
+<td>React · Angular · JavaScript</td>
+<td>🟢 Active</td>
+</tr>
+
+<tr>
+<td>API Development</td>
+<td>REST · JSON · Axios · Postman</td>
+<td>🟢 Active</td>
+</tr>
+
+<tr>
+<td>IoT & Automation</td>
+<td>ESP32 · Raspberry Pi · Firebase</td>
+<td>🟢 Active</td>
+</tr>
+
+<tr>
+<td>Cloud & Deployment</td>
+<td>Firebase · Docker · GitHub</td>
+<td>🟡 Learning</td>
+</tr>
+
+</table>
+
+<p align="center">
+
+<strong>IDEA</strong>
+&nbsp;→&nbsp;
+<strong>DESIGN</strong>
+&nbsp;→&nbsp;
+<strong>BUILD</strong>
+&nbsp;→&nbsp;
+<strong>TEST</strong>
+&nbsp;→&nbsp;
+<strong>IMPROVE</strong>
+&nbsp;→&nbsp;
+<strong>SHIP</strong>
+
+</p>
+
+<p align="center">
+<em>Continuous development. Continuous improvement.</em>
+</p>
 ---
 
 # `06` — Contribution Activity
