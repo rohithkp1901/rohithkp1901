@@ -192,7 +192,13 @@ alt="GitHub Analytics"
 <td>Full Stack Development</td>
 <td>React · Angular · Django · Flask</td>
 <td>
-<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+<img
+src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/active-bulb.svg"
+width="22"
+height="22"
+alt="Active"
+/>
+&nbsp; <strong>Active</strong>
 </td>
 </tr>
 
@@ -200,7 +206,13 @@ alt="GitHub Analytics"
 <td>Backend Engineering</td>
 <td>Python · Django · Flask · REST APIs</td>
 <td>
-<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+<img
+src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/active-bulb.svg"
+width="22"
+height="22"
+alt="Active"
+/>
+&nbsp; <strong>Active</strong>
 </td>
 </tr>
 
@@ -208,7 +220,13 @@ alt="GitHub Analytics"
 <td>Frontend Development</td>
 <td>React · Angular · JavaScript</td>
 <td>
-<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+<img
+src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/active-bulb.svg"
+width="22"
+height="22"
+alt="Active"
+/>
+&nbsp; <strong>Active</strong>
 </td>
 </tr>
 
@@ -216,7 +234,13 @@ alt="GitHub Analytics"
 <td>API Development</td>
 <td>REST · JSON · Axios · Postman</td>
 <td>
-<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+<img
+src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/active-bulb.svg"
+width="22"
+height="22"
+alt="Active"
+/>
+&nbsp; <strong>Active</strong>
 </td>
 </tr>
 
@@ -224,7 +248,13 @@ alt="GitHub Analytics"
 <td>IoT & Automation</td>
 <td>ESP32 · Raspberry Pi · Firebase</td>
 <td>
-<img src="https://img.shields.io/badge/●-ACTIVE-16A34A?style=flat-square&labelColor=0D1117" />
+<img
+src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/active-bulb.svg"
+width="22"
+height="22"
+alt="Active"
+/>
+&nbsp; <strong>Active</strong>
 </td>
 </tr>
 
@@ -232,7 +262,13 @@ alt="GitHub Analytics"
 <td>Cloud & Deployment</td>
 <td>Firebase · Docker · GitHub</td>
 <td>
-<img src="https://img.shields.io/badge/●-LEARNING-EAB308?style=flat-square&labelColor=0D1117" />
+<img
+src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/learning-bulb.svg"
+width="22"
+height="22"
+alt="Learning"
+/>
+&nbsp; <strong>Learning</strong>
 </td>
 </tr>
 
@@ -253,7 +289,10 @@ alt="GitHub Analytics"
 <strong>SHIP</strong>
 
 </p>
----
+
+<p align="center">
+<em>Continuous development. Continuous improvement.</em>
+</p>---
 
 # `06` — Contribution Activity
 
