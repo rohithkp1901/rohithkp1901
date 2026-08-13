@@ -183,6 +183,21 @@ Animated portfolio showcasing projects, skills, services and freelance work.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/output/github-contribution-grid-snake.svg" width="100%" alt="Contribution Snake" />
+</p># `07` — Contribution Activity
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/output/github-contribution-grid-snake.svg"
+    width="100%"
+    alt="GitHub Contribution Snake"
+  />
+</p>
+
+<p align="center">
+  <img
+    src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=16&duration=3000&pause=1200&color=64748B&center=true&vCenter=true&width=700&lines=Consistency+%E2%86%92+Contribution+%E2%86%92+Growth;Every+commit+is+a+step+forward."
+    alt="Contribution Message"
+  />
 </p>
 
 ---
