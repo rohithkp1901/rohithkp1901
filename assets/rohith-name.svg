@@ -1,0 +1,19 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="800"
+  height="140"
+  viewBox="0 0 800 140"
+>
+  <text
+    x="400"
+    y="90"
+    text-anchor="middle"
+    font-family="Courier New, Courier, monospace"
+    font-size="72"
+    font-weight="400"
+    letter-spacing="12"
+    fill="#ffffff"
+  >
+    Rohith K P
+  </text>
+</svg>
