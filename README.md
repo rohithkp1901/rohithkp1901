@@ -100,7 +100,7 @@ SHIPPING  ██████████████░░░░░░   70%
 # `06` — DEVELOPMENT LOOP
 
 <div align="center">
-<img src="./assets/development-loop.svg" width="900" alt="Animated development loop" />
+<img src="https://raw.githubusercontent.com/rohithkp1901/rohithkp1901/main/assets/development-loop.svg" width="900" alt="Animated development loop" />
 </div>
 
 ```text
