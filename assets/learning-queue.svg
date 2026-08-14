@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="950" height="430" viewBox="0 0 950 430">
 <rect width="950" height="430" rx="14" fill="#010601" stroke="#00ff41" stroke-width="2"/>
 <g font-family="monospace">
-<text x="30" y="40" fill="#00ff41" font-size="21" font-weight="700">09 — LEARNING QUEUE</text>
 <text x="30" y="66" fill="#55ff88" font-size="11">root@rohithkp:~$ learning --status</text>
 <g fill="#06200d">
 <rect x="30" y="95" width="890" height="48" rx="7"/><rect x="30" y="160" width="890" height="48" rx="7"/>
