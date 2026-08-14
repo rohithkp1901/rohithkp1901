@@ -6,19 +6,19 @@
 [ SYSTEM ONLINE ]  [ DEVELOPER MODE ]  [ FULL STACK ]
 ```
 
-
 </div>
 
 ---
 
 # `01` — SYSTEM PROFILE
+<div align="center">
 <img src="./assets/system-profile.svg" width="900" alt="Animated system profile" />
 
 <a href="https://rohith-kp.vercel.app/"><img src="https://img.shields.io/badge/PORTFOLIO-00ff41?style=for-the-badge&logo=googlechrome&logoColor=000000" /></a>
 <a href="https://linkedin.com/in/rohith-k-p"><img src="https://img.shields.io/badge/LINKEDIN-00ff41?style=for-the-badge&logo=linkedin&logoColor=000000" /></a>
 <a href="https://www.instagram.com/r__o_h_i_t__h/"><img src="https://img.shields.io/badge/INSTAGRAM-00ff41?style=for-the-badge&logo=instagram&logoColor=000000" /></a>
 <a href="mailto:rohithkp549@gmail.com"><img src="https://img.shields.io/badge/EMAIL-00ff41?style=for-the-badge&logo=gmail&logoColor=000000" /></a>
-
+</div>
 
 > Building practical software, testing real systems, solving problems and continuously improving.
 
@@ -111,6 +111,9 @@ IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
 <a href="https://linkedin.com/in/rohith-k-p">💼 LINKEDIN</a> &nbsp; · &nbsp;
 <a href="https://www.instagram.com/r__o_h_i_t__h/">📸 INSTAGRAM</a> &nbsp; · &nbsp;
 <a href="mailto:rohithkp549@gmail.com">✉ EMAIL</a>
+
+<br><br>
+<a href="https://leetcode.com/u/rohithkp1901/"><img src="https://img.shields.io/badge/LEETCODE-rohithkp1901-00ff41?style=for-the-badge&logo=leetcode&logoColor=000000&labelColor=000000" /></a>
 
 <br><br>
 <img src="./assets/footer.svg?v=20260814" width="100%" alt="System online" />
