@@ -116,7 +116,7 @@ IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
 <a href="mailto:rohithkp549@gmail.com">✉ EMAIL</a>
 
 <br><br>
-<img src="./assets/footer.svg" width="100%" alt="System online" />
+<img src="./assets/footer.svg?v=20260814" width="100%" alt="System online" />
 
 ```text
 root@rohithkp:~$ system-status
