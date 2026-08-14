@@ -6,15 +6,6 @@
 [ SYSTEM ONLINE ]  [ DEVELOPER MODE ]  [ FULL STACK ]
 ```
 
-
-</div>
-
----
-
-# `01` — SYSTEM PROFILE
-
-
-
 <img src="./assets/system-profile.svg" width="900" alt="Animated system profile" />
 
 <a href="https://rohith-kp.vercel.app/"><img src="https://img.shields.io/badge/PORTFOLIO-00ff41?style=for-the-badge&logo=googlechrome&logoColor=000000" /></a>
@@ -22,6 +13,11 @@
 <a href="https://www.instagram.com/r__o_h_i_t__h/"><img src="https://img.shields.io/badge/INSTAGRAM-00ff41?style=for-the-badge&logo=instagram&logoColor=000000" /></a>
 <a href="mailto:rohithkp549@gmail.com"><img src="https://img.shields.io/badge/EMAIL-00ff41?style=for-the-badge&logo=gmail&logoColor=000000" /></a>
 
+</div>
+
+---
+
+# `01` — SYSTEM PROFILE
 
 > Building practical software, testing real systems, solving problems and continuously improving.
 
@@ -117,19 +113,5 @@ IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
 
 <br><br>
 <img src="./assets/footer.svg?v=20260814" width="100%" alt="System online" />
-
-```text
-root@rohithkp:~$ system-status
-
-SYSTEM       : ONLINE
-DEVELOPER    : ROHITH K P
-MODE         : FULL STACK
-PROJECT      : ALEMS
-STATUS       : READY
-
-root@rohithkp:~$ _
-```
-
-### `BUILD → TEST → DEBUG → IMPROVE → SHIP`
 
 </div>
