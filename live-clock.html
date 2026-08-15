@@ -21,7 +21,7 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app
 import{getAuth,signInAnonymously,signInWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import{getDatabase,ref,set,onValue,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 const firebaseConfig={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
-const OWNER_EMAIL="YOUR_OWNER_EMAIL";
+const OWNER_EMAIL="rohithkp1901@gmail.com";
 const $=id=>document.getElementById(id);let app,auth,db,uid,isOwner=false;
 function tick(){const n=new Date(),tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"Unknown timezone";$('clock').textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});$('date').textContent=n.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase()+` · ${tz}`}tick();setInterval(tick,1000);
 async function reverse(lat,lon){try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);if(!r.ok)throw 0;const d=await r.json(),a=d.address||{};return[a.city||a.town||a.village||a.municipality,a.state,a.country].filter(Boolean).join(', ')||`${lat.toFixed(6)}, ${lon.toFixed(6)}`}catch{return`${lat.toFixed(6)}, ${lon.toFixed(6)}`}}
