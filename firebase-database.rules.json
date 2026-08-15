@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "owner": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.email == 'YOUR_OWNER_EMAIL'"
+    },
+    "visitors": {
+      "$uid": {
+        ".write": "auth != null && auth.uid == $uid",
+        ".read": "auth != null && auth.token.email == 'YOUR_OWNER_EMAIL'",
+        ".validate": "newData.hasChildren(['name','latitude','longitude','online']) && newData.child('name').isString() && newData.child('name').val().length <= 60 && newData.child('latitude').isNumber() && newData.child('longitude').isNumber() && newData.child('online').isBoolean()"
+      }
+    }
+  }
+}
