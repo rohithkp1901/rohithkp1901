@@ -2,8 +2,7 @@
 
 <a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK-OPEN%20REAL--TIME%20CLOCK-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
 
-<br>
-<sub>🕐 LIVE TIME · KOCHI, KERALA, INDIA · IST (UTC+05:30)</sub>
+<sub>🕐 Live time · Kochi, Kerala, India · IST (UTC+05:30)</sub>
 
 <br><br>
 
@@ -68,14 +67,7 @@
 # `06` — DEVELOPMENT LOOP
 
 <div align="center">
-<img src="./assets/development-loop.svg?v=20260816-3" width="900" alt="Animated development loop with live clock indicator" />
-
-<br>
-
-<a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK-OPEN%20REAL--TIME%20CLOCK-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
-
-<br>
-<sub>🕐 Real-time system clock · Kochi, Kerala, India · IST (UTC+05:30)</sub>
+<img src="./assets/development-loop.svg?v=20260816-3" width="900" alt="Animated development loop" />
 </div>
 
 ```text
