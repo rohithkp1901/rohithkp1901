@@ -61,14 +61,14 @@
 # `06` — DEVELOPMENT LOOP
 
 <div align="center">
-<img src="./assets/development-loop.svg" width="900" alt="Animated development loop" />
+<img src="./assets/development-loop.svg?v=20260816" width="900" alt="Animated development loop with live clock indicator" />
 
 <br>
 
 <a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK-HH%3AMM%3ASS%20AM%2FPM-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
 
 <br>
-<sub>🕐 Real-time system clock · IST (UTC+05:30)</sub>
+<sub>🕐 Real-time system clock · IST (UTC+05:30) · Opens the live JavaScript clock</sub>
 </div>
 
 ```text
