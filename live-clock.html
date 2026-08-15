@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rohith K P — Live Location</title>
+<title>Rohith K P — Live System Clock</title>
 <style>
   :root {
     --neon: #00ff41;
     --bg: #05080b;
-    --dim: #0a3d1a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -47,26 +46,20 @@
     font-size: 13px;
     letter-spacing: 3px;
     opacity: 0.8;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
   }
-  .pin {
-    font-size: 34px;
-    letter-spacing: 2px;
+  .clock {
+    font-size: 56px;
+    letter-spacing: 3px;
     text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    font-variant-numeric: tabular-nums;
   }
-  .pin::before { content: "◉ "; }
-  .coords {
-    font-size: 14px;
+  .date {
+    font-size: 15px;
     opacity: 0.75;
     margin-bottom: 18px;
     letter-spacing: 1px;
-  }
-  .time {
-    font-size: 22px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    text-shadow: 0 0 6px var(--neon);
   }
   .meta {
     font-size: 12px;
@@ -74,7 +67,7 @@
     opacity: 0.7;
   }
   .footer {
-    margin-top: 20px;
+    margin-top: 22px;
     font-size: 11px;
     letter-spacing: 2px;
     opacity: 0.55;
@@ -85,26 +78,34 @@
 </head>
 <body>
   <div class="panel">
-    <div class="tag">ROHITHKP // LIVE LOCATION FEED</div>
-    <div class="pin">KOCHI, KERALA, INDIA</div>
-    <div class="coords">9.9312° N, 76.2673° E</div>
-    <div class="time" id="clock">00:00:00 AM</div>
+    <div class="tag">ROHITHKP // SYSTEM CLOCK LIVE</div>
+    <div class="clock" id="clock">00:00:00 AM</div>
+    <div class="date" id="date">--</div>
     <div class="meta">ASIA/KOLKATA · IST · UTC+05:30</div>
-    <div class="footer"><span class="blink">●</span>&nbsp; LOCATION LOCKED · AUTO REFRESH · SYSTEM ONLINE</div>
+    <div class="footer"><span class="blink">●</span>&nbsp; REAL-TIME CLOCK · AUTO REFRESH · SYSTEM ONLINE</div>
   </div>
 
   <script>
     function tick() {
       const now = new Date();
-      const opts = {
+      const timeOpts = {
         timeZone: "Asia/Kolkata",
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: true
       };
+      const dateOpts = {
+        timeZone: "Asia/Kolkata",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      };
       document.getElementById("clock").textContent =
-        now.toLocaleTimeString("en-US", opts);
+        now.toLocaleTimeString("en-US", timeOpts);
+      document.getElementById("date").textContent =
+        now.toLocaleDateString("en-US", dateOpts).toUpperCase();
     }
     tick();
     setInterval(tick, 1000);
