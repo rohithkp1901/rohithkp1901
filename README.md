@@ -1,5 +1,12 @@
 <div align="center">
 
+<a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK-OPEN%20REAL--TIME%20CLOCK-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
+
+<br>
+<sub>🕐 LIVE TIME · KOCHI, KERALA, INDIA · IST (UTC+05:30)</sub>
+
+<br><br>
+
 <img src="./assets/rohith-name.svg" width="720" alt="Rohith K P" />
 
 ```text
@@ -61,14 +68,14 @@
 # `06` — DEVELOPMENT LOOP
 
 <div align="center">
-<img src="./assets/development-loop.svg?v=20260816-2" width="900" alt="Animated development loop with live clock indicator" />
+<img src="./assets/development-loop.svg?v=20260816-3" width="900" alt="Animated development loop with live clock indicator" />
 
 <br>
 
-<a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK-HH%3AMM%3ASS%20AM%2FPM-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
+<a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK-OPEN%20REAL--TIME%20CLOCK-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
 
 <br>
-<sub>🕐 Real-time system clock · IST (UTC+05:30) · Opens the live JavaScript clock</sub>
+<sub>🕐 Real-time system clock · Kochi, Kerala, India · IST (UTC+05:30)</sub>
 </div>
 
 ```text
