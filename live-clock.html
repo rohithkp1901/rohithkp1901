@@ -1,9 +1,113 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rohith K P — Live System Clock</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rohith K P — Live Location</title>
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#05080c;color:#00ff41;font-family:Consolas,monospace;overflow:hidden}body:before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(0,255,65,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.035) 1px,transparent 1px);background-size:28px 28px;animation:grid 8s linear infinite}@keyframes grid{to{background-position:28px 28px}}.card{position:relative;width:min(900px,92vw);padding:42px;border:1px solid #163d25;border-radius:16px;background:rgba(5,12,9,.9);box-shadow:0 0 50px rgba(0,255,65,.08),inset 0 0 50px rgba(0,255,65,.025);text-align:center}.top{display:flex;justify-content:space-between;color:#6d8b78;font-size:13px;letter-spacing:2px}.live{color:#00ff41}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#00ff41;box-shadow:0 0 15px #00ff41;animation:pulse .8s infinite}@keyframes pulse{50%{opacity:.15;transform:scale(.7)}}h1{font-size:clamp(42px,9vw,96px);letter-spacing:5px;margin:65px 0 10px;text-shadow:0 0 18px rgba(0,255,65,.55)}.date{color:#91a99a;font-size:16px}.zone{margin-top:28px;color:#00ff41;font-size:13px;letter-spacing:3px}.bar{height:2px;background:#10271a;margin:35px 0;overflow:hidden}.bar i{display:block;height:100%;width:25%;background:#00ff41;box-shadow:0 0 12px #00ff41;animation:scan 2s linear infinite}@keyframes scan{from{transform:translateX(-100%)}to{transform:translateX(500%)}}.footer{color:#52685a;font-size:11px;letter-spacing:2px}
-</style></head>
-<body><main class="card"><div class="top"><span>ROHITHKP // SYSTEM CLOCK</span><span class="live"><i class="dot"></i> LIVE</span></div><h1 id="time">00:00:00 AM</h1><div class="date" id="date">Loading...</div><div class="zone">ASIA/KOLKATA · IST · UTC+05:30</div><div class="bar"><i></i></div><div class="footer">REAL-TIME CLOCK · AUTO REFRESH · SYSTEM ONLINE</div></main><script>const z='Asia/Kolkata';function tick(){const d=new Date();document.getElementById('time').textContent=new Intl.DateTimeFormat('en-IN',{timeZone:z,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(d);document.getElementById('date').textContent=new Intl.DateTimeFormat('en-IN',{timeZone:z,weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(d)}tick();setInterval(tick,1000)</script></body></html>
+  :root {
+    --neon: #00ff41;
+    --bg: #05080b;
+    --dim: #0a3d1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--neon);
+    font-family: "Courier New", Courier, monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 65, 0.04) 0px,
+      rgba(0, 255, 65, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+  }
+  .panel {
+    text-align: center;
+    padding: 40px 60px;
+    border: 1px solid var(--neon);
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.35), inset 0 0 20px rgba(0, 255, 65, 0.05);
+    background: rgba(0, 255, 65, 0.02);
+    max-width: 90vw;
+  }
+  .tag {
+    font-size: 13px;
+    letter-spacing: 3px;
+    opacity: 0.8;
+    margin-bottom: 18px;
+  }
+  .pin {
+    font-size: 34px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
+    margin-bottom: 10px;
+  }
+  .pin::before { content: "◉ "; }
+  .coords {
+    font-size: 14px;
+    opacity: 0.75;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+  }
+  .time {
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 6px var(--neon);
+  }
+  .meta {
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.7;
+  }
+  .footer {
+    margin-top: 20px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: 0.55;
+  }
+  .blink { animation: blink 1.4s steps(2, start) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+</style>
+</head>
+<body>
+  <div class="panel">
+    <div class="tag">ROHITHKP // LIVE LOCATION FEED</div>
+    <div class="pin">KOCHI, KERALA, INDIA</div>
+    <div class="coords">9.9312° N, 76.2673° E</div>
+    <div class="time" id="clock">00:00:00 AM</div>
+    <div class="meta">ASIA/KOLKATA · IST · UTC+05:30</div>
+    <div class="footer"><span class="blink">●</span>&nbsp; LOCATION LOCKED · AUTO REFRESH · SYSTEM ONLINE</div>
+  </div>
+
+  <script>
+    function tick() {
+      const now = new Date();
+      const opts = {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      };
+      document.getElementById("clock").textContent =
+        now.toLocaleTimeString("en-US", opts);
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
