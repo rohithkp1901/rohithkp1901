@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rohith K P — Live Location</title>
+<style>
+  :root {
+    --neon: #00ff41;
+    --bg: #05080b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--neon);
+    font-family: "Courier New", Courier, monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 12px;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 65, 0.04) 0px,
+      rgba(0, 255, 65, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+  }
+  .wrap {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .panel {
+    text-align: center;
+    padding: 32px 44px;
+    border: 1px solid var(--neon);
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.35), inset 0 0 20px rgba(0, 255, 65, 0.05);
+    background: rgba(0, 255, 65, 0.02);
+    width: 320px;
+  }
+  .tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    opacity: 0.8;
+    margin-bottom: 16px;
+  }
+  .pin {
+    font-size: 26px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
+    margin-bottom: 10px;
+    min-height: 32px;
+  }
+  .pin::before { content: "◉ "; }
+  .coords {
+    font-size: 13px;
+    opacity: 0.75;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+  .time {
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 6px var(--neon);
+  }
+  .meta {
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: 0.7;
+  }
+  .source {
+    margin-top: 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    opacity: 0.45;
+  }
+  .footer {
+    margin-top: 18px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: 0.55;
+  }
+  .blink { animation: blink 1.4s steps(2, start) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <div class="tag">ROHITHKP // BASE LOCATION</div>
+      <div class="pin" id="my-pin">LOADING...</div>
+      <div class="coords" id="my-coords">--</div>
+      <div class="time" id="my-clock">00:00:00 AM</div>
+      <div class="meta" id="my-meta">--</div>
+      <div class="footer"><span class="blink">●</span>&nbsp; LOCATION LOCKED · SYSTEM ONLINE</div>
+    </div>
+
+    <div class="panel">
+      <div class="tag">VISITOR // YOUR LOCATION</div>
+      <div class="pin" id="you-pin">LOCATING...</div>
+      <div class="coords" id="you-coords">--</div>
+      <div class="time" id="you-clock">00:00:00 AM</div>
+      <div class="meta" id="you-meta">--</div>
+      <div class="source" id="you-source"></div>
+      <div class="footer"><span class="blink">●</span>&nbsp; TRACKING · AUTO REFRESH</div>
+    </div>
+  </div>
+
+  <script>
+    let myTZ = "Asia/Kolkata";
+    let youTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+
+    function fmt(tz) {
+      return new Date().toLocaleTimeString("en-US", {
+        timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+      });
+    }
+
+    function tick() {
+      document.getElementById("my-clock").textContent = fmt(myTZ);
+      document.getElementById("you-clock").textContent = fmt(youTZ);
+    }
+
+    function coordsText(lat, lon) {
+      return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " +
+             Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
+    }
+
+    async function loadMyLocation() {
+      try {
+        const res = await fetch("location.json?_=" + Date.now());
+        const data = await res.json();
+        document.getElementById("my-coords").textContent = coordsText(data.latitude, data.longitude);
+        try {
+          const geo = await fetch(
+            "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
+            data.latitude + "&longitude=" + data.longitude + "&localityLanguage=en"
+          );
+          const place = await geo.json();
+          myTZ = place.localityInfo && place.localityInfo.timeZone
+            ? place.localityInfo.timeZone.ianaTimeId
+            : (data.timezone || myTZ);
+          document.getElementById("my-pin").textContent =
+            [place.city || place.locality, place.principalSubdivision, place.countryName]
+              .filter(Boolean).join(", ").toUpperCase();
+        } catch (geoErr) {
+          myTZ = data.timezone || myTZ;
+          document.getElementById("my-pin").textContent = "UPDATING...";
+        }
+        document.getElementById("my-meta").textContent = myTZ.toUpperCase();
+      } catch (e) {
+        document.getElementById("my-pin").textContent = "LOCATION UNAVAILABLE";
+      }
+      tick();
+    }
+
+    function renderYouPlace(city, region, country) {
+      const place = [city, region, country].filter(Boolean).join(", ");
+      document.getElementById("you-pin").textContent = place ? place.toUpperCase() : "UNKNOWN LOCATION";
+    }
+
+    async function reverseGeocode(lat, lon) {
+      try {
+        const res = await fetch(
+          "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
+          lat + "&longitude=" + lon + "&localityLanguage=en"
+        );
+        const data = await res.json();
+        renderYouPlace(data.city || data.locality, data.principalSubdivision, data.countryName);
+      } catch (e) {
+        renderYouPlace(null, null, null);
+      }
+    }
+
+    async function locateByIP() {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        const data = await res.json();
+        renderYouPlace(data.city, data.region, data.country_name);
+        document.getElementById("you-coords").textContent = coordsText(data.latitude, data.longitude);
+        youTZ = data.timezone || youTZ;
+        document.getElementById("you-meta").textContent = youTZ.toUpperCase();
+        document.getElementById("you-source").textContent = "SOURCE: IP-BASED";
+      } catch (e) {
+        document.getElementById("you-pin").textContent = "LOCATION UNAVAILABLE";
+      }
+      tick();
+    }
+
+    function locateByGPS() {
+      if (!navigator.geolocation) {
+        locateByIP();
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          document.getElementById("you-coords").textContent = coordsText(lat, lon);
+          reverseGeocode(lat, lon);
+          youTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || youTZ;
+          document.getElementById("you-meta").textContent = youTZ.toUpperCase();
+          document.getElementById("you-source").textContent = "SOURCE: GPS";
+          tick();
+        },
+        function () {
+          locateByIP();
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    loadMyLocation();
+    locateByGPS();
+    setInterval(tick, 1000);
+    setInterval(loadMyLocation, 60000);
+  </script>
+</body>
+</html>
