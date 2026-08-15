@@ -61,7 +61,7 @@
 # `06` — DEVELOPMENT LOOP
 
 <div align="center">
-<img src="./assets/development-loop.svg?v=20260816" width="900" alt="Animated development loop with live clock indicator" />
+<img src="./assets/development-loop.svg?v=20260816-2" width="900" alt="Animated development loop with live clock indicator" />
 
 <br>
 
