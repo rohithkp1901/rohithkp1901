@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK/%20LOCATION-OPEN%20REAL--TIME%20CLOCK-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
+<a href="https://rohithkp1901.github.io/rohithkp1901/live-clock.html"><img src="https://img.shields.io/badge/◉%20LIVE%20CLOCK%20/%20LOCATION-OPEN%20REAL--TIME%20CLOCK-00ff41?style=for-the-badge&labelColor=05080b&logo=clockify&logoColor=00ff41" alt="Open live clock" /></a>
 <br>
 <sub>
 📍 LIVE LOCATION · GPS ENABLED &nbsp;·&nbsp;
