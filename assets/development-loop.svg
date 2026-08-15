@@ -33,12 +33,6 @@
   <rect x="810" y="82" width="140" height="78" rx="8"><animate attributeName="opacity" values="0;0;0;0;1" dur="5s" repeatCount="indefinite"/></rect>
 </g>
 
-<rect x="345" y="180" width="310" height="62" rx="9" fill="#05080b" stroke="#26323d"/>
-<text x="500" y="201" text-anchor="middle" fill="#687783" font-family="monospace" font-size="10">SYSTEM CLOCK</text>
-<text x="500" y="228" text-anchor="middle" fill="#00ff41" filter="url(#glow)" font-family="monospace" font-size="22" font-weight="700">LIVE CLOCK</text>
-<circle cx="430" cy="220" r="4" fill="#00ff41" filter="url(#glow)"><animate attributeName="opacity" values="1;.1;1" dur=".8s" repeatCount="indefinite"/></circle>
-<rect x="370" y="236" width="260" height="1" fill="url(#scan)"><animate attributeName="x" values="350;390;350" dur="2s" repeatCount="indefinite"/></rect>
 
 <text x="500" y="267" text-anchor="middle" fill="#71808d" font-family="monospace" font-size="10">IDEA → DESIGN → BUILD → TEST → SHIP → REPEAT</text>
-<text x="500" y="290" text-anchor="middle" fill="#00ff41" font-family="monospace" font-size="10">● REAL-TIME CLOCK AVAILABLE BELOW</text>
 </svg>
