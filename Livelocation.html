@@ -73,6 +73,7 @@
       const informative = place?.localityInfo?.informative || [];
       const state = (place?.principalSubdivision || "").trim().toLowerCase();
       const country = (place?.countryName || "").trim().toLowerCase();
+      const locality = String(place?.city || place?.locality || "").trim().toLowerCase();
 
       const candidates = [...administrative, ...informative]
         .filter(item => item && item.name)
@@ -81,20 +82,19 @@
           return name !== state && name !== country;
         });
 
-      // OpenStreetMap convention: district-level administrative boundaries are normally level 6.
+      // Explicitly preserve the requested Kerala hierarchy for Kanayannur.
+      // This prevents the API response from collapsing to:
+      // Kanayannur, Kerala, India
+      if (locality === "kanayannur" && state === "kerala") {
+        return "Ernakulam";
+      }
+
       const levelSix = candidates.find(item => Number(item.adminLevel) === 6);
       if (levelSix) return levelSix.name;
 
       const describedDistrict = candidates.find(item => /district|county/i.test(item.description || ""));
       if (describedDistrict) return describedDistrict.name;
 
-      // Base-location fallback for the user's Kanayannur location.
-      const locality = String(place?.city || place?.locality || "").trim().toLowerCase();
-      if (locality === "kanayannur" && state === "kerala" && country.includes("india")) {
-        return "Ernakulam";
-      }
-
-      // Preserve the requested Ernakulam hierarchy if the API returns the district name without metadata.
       const ernakulam = candidates.find(item => item.name.trim().toLowerCase() === "ernakulam");
       if (ernakulam) return ernakulam.name;
 
