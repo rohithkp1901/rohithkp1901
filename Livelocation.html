@@ -1,22 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Rohith K P — Live Location</title><style>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rohith K P — Live Location</title>
+<style>
 :root{--neon:#00ff41;--bg:#05080b}*{box-sizing:border-box;margin:0;padding:0}html,body{min-height:100%;background:var(--bg);color:var(--neon);font-family:"Courier New",monospace;display:flex;align-items:center;justify-content:center;padding:24px 12px}body:before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(0deg,rgba(0,255,65,.04) 0 1px,transparent 1px 3px);pointer-events:none}.wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;width:100%}.panel{text-align:center;padding:28px 24px;border:1px solid var(--neon);border-radius:6px;box-shadow:0 0 12px rgba(0,255,65,.35),inset 0 0 20px rgba(0,255,65,.05);background:rgba(0,255,65,.02);width:min(420px,92vw)}.tag{font-size:12px;letter-spacing:3px;opacity:.8;margin-bottom:16px}.pin{font-size:clamp(13px,4vw,20px);line-height:1.5;letter-spacing:.5px;text-shadow:0 0 8px var(--neon),0 0 20px var(--neon);margin-bottom:10px;min-height:32px;overflow-wrap:break-word}.pin:before{content:"📍 "}.coords{font-size:13px;opacity:.75;margin-bottom:16px;letter-spacing:1px}.time{font-size:20px;letter-spacing:2px;margin-bottom:10px;text-shadow:0 0 6px var(--neon)}.meta{font-size:11px;letter-spacing:2px;opacity:.7}.source{margin-top:10px;font-size:10px;letter-spacing:1px;opacity:.45}.footer{margin-top:18px;font-size:10px;letter-spacing:2px;opacity:.55}.blink{animation:blink 1.4s steps(2,start) infinite}@keyframes blink{to{visibility:hidden}}@media(max-width:480px){html,body{padding:16px 8px}.panel{padding:24px 14px}.tag{font-size:10px;letter-spacing:2px}.pin{font-size:14px}}
-</style></head><body><div class="wrap">
+</style>
+</head>
+<body>
+<div class="wrap">
 <div class="panel"><div class="tag">👤 OWNER LOCATION · LIVE</div><div class="pin" id="my-pin">LOCATING OWNER...</div><div class="coords" id="my-coords">--</div><div class="time" id="my-clock">00:00:00 AM</div><div class="meta" id="my-meta">WAITING FOR OWNER GPS</div><div class="footer"><span class="blink">●</span>&nbsp; LIVE · FIREBASE REALTIME</div></div>
 <div class="panel"><div class="tag">👥 VISITOR · YOUR LOCATION</div><div class="pin" id="you-pin">LOCATING...</div><div class="coords" id="you-coords">--</div><div class="time" id="you-clock">00:00:00 AM</div><div class="meta" id="you-meta">--</div><div class="source" id="you-source"></div><div class="footer"><span class="blink">●</span>&nbsp; PRIVATE · GPS</div></div>
-</div><script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+</div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{getDatabase,ref,onValue,set,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
 const firebaseConfig={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
-const db=getDatabase(initializeApp(firebaseConfig)), $=id=>document.getElementById(id);let myTZ="Asia/Kolkata",youTZ=Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";
-function fmt(t){return new Date().toLocaleTimeString("en-US",{timeZone:t,hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true})}function tick(){$("my-clock").textContent=fmt(myTZ);$("you-clock").textContent=fmt(youTZ)}function coords(lat,lon){return Math.abs(+lat).toFixed(4)+"° "+(+lat>=0?"N":"S")+", "+Math.abs(+lon).toFixed(4)+"° "+(+lon>=0?"E":"W")}
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app),$=id=>document.getElementById(id);
+const OWNER="rohithkp1901@gmail.com";
+let myTZ="Asia/Kolkata",youTZ=Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";
+let ownerGpsStarted=false;
+
+function fmt(t){return new Date().toLocaleTimeString("en-US",{timeZone:t,hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true})}
+function tick(){$("my-clock").textContent=fmt(myTZ);$("you-clock").textContent=fmt(youTZ)}
+function coords(lat,lon){return Math.abs(+lat).toFixed(4)+"° "+(+lat>=0?"N":"S")+", "+Math.abs(+lon).toFixed(4)+"° "+(+lon>=0?"E":"W")}
 function unique(a){return[...new Set(a.filter(Boolean).map(x=>String(x).trim()).filter(Boolean))].filter((x,i,v)=>v.findIndex(y=>y.toLowerCase()===x.toLowerCase())===i)}
 function district(d){const a=[...(d?.localityInfo?.administrative||[]),...(d?.localityInfo?.informative||[])],state=String(d?.principalSubdivision||"").trim().toLowerCase(),loc=String(d?.locality||"").trim().toLowerCase(),city=String(d?.city||"").trim().toLowerCase();if(state==="kerala"&&(loc==="kanayannur"||city==="kanayannur"))return"Ernakulam";const c=a.filter(x=>x?.name&&String(x.name).trim().toLowerCase()!==state),l6=c.find(x=>+x.adminLevel===6),desc=c.find(x=>/district|county/i.test(x.description||"")),ern=c.find(x=>String(x.name).trim().toLowerCase()==="ernakulam");return l6?.name||desc?.name||ern?.name||""}
 function parts(d){const loc=d?.locality||d?.city||"",city=d?.city||"";return unique([loc,city.toLowerCase()!==loc.toLowerCase()?city:"",district(d),d?.principalSubdivision,d?.countryName])}
 async function reverse(lat,lon){try{const r=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);if(!r.ok)throw Error();return await r.json()}catch{return null}}
-// Owner location is driven by the owner's current GPS coordinates in Firebase. Every Firebase update refreshes the displayed place.
-onValue(ref(db,"owner"),async snap=>{const d=snap.val();if(!d||d.online===false){$("my-pin").textContent="OWNER GPS OFFLINE";$("my-meta").textContent="WAITING FOR OWNER LOCATION";return}if(d.latitude!=null&&d.longitude!=null){$("my-coords").textContent=coords(d.latitude,d.longitude);const geo=await reverse(d.latitude,d.longitude);$("my-pin").textContent=geo?parts(geo).join(", "):(d.place||"OWNER LOCATION UPDATING...")}else{$("my-pin").textContent=d.place||"OWNER LOCATION UPDATING..."}myTZ=d.timezone||myTZ;$("my-meta").textContent=`● LIVE · ACCURACY ±${Math.round(+d.accuracy||0)} m`;tick()});
+
+// If the owner is already authenticated in this browser, automatically start
+// sharing the owner's live GPS. This works on mobile, laptop and desktop browsers.
+function startOwnerGPS(){
+ if(ownerGpsStarted||!navigator.geolocation)return;
+ ownerGpsStarted=true;
+ navigator.geolocation.watchPosition(async p=>{
+  const{latitude,longitude,accuracy}=p.coords;
+  const geo=await reverse(latitude,longitude);
+  const place=geo?parts(geo).join(", "):"";
+  try{
+   const r=ref(db,"owner");
+   await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp()});
+   await onDisconnect(r).update({online:false});
+  }catch(e){console.error("Owner location share failed:",e)}
+ },e=>{
+  console.error("Owner GPS error:",e);
+  ownerGpsStarted=false;
+ },{enableHighAccuracy:true,maximumAge:0,timeout:30000});
+}
+
+onAuthStateChanged(auth,user=>{
+ if(user&&user.email===OWNER)startOwnerGPS();
+});
+
+// Owner location is displayed from Firebase for every visitor.
+onValue(ref(db,"owner"),async snap=>{
+ const d=snap.val();
+ if(!d||d.online===false){$("my-pin").textContent="OWNER GPS OFFLINE";$("my-meta").textContent="WAITING FOR OWNER LOCATION";return}
+ if(d.latitude!=null&&d.longitude!=null){
+  $("my-coords").textContent=coords(d.latitude,d.longitude);
+  const geo=await reverse(d.latitude,d.longitude);
+  $("my-pin").textContent=geo?parts(geo).join(", "):(d.place||"OWNER LOCATION UPDATING...");
+ }else{$("my-pin").textContent=d.place||"OWNER LOCATION UPDATING..."}
+ myTZ=d.timezone||myTZ;
+ $("my-meta").textContent=`● LIVE · ACCURACY ±${Math.round(+d.accuracy||0)} m`;
+ tick();
+});
+
 async function visitorReverse(lat,lon){try{const d=await reverse(lat,lon);if(d)$("you-pin").textContent=parts(d).join(", ");else $("you-pin").textContent="Location name unavailable"}catch{$("you-pin").textContent="Location name unavailable"}}
 function ip(){fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{$("you-pin").textContent=unique([d.city,d.region,d.country_name]).join(", ");if(d.latitude!=null)$("you-coords").textContent=coords(d.latitude,d.longitude);youTZ=d.timezone||youTZ;$("you-meta").textContent=youTZ.toUpperCase();$("you-source").textContent="SOURCE: IP-BASED";tick()}).catch(()=>$("you-pin").textContent="Location unavailable")}
-function gps(){if(!navigator.geolocation){ip();return}navigator.geolocation.getCurrentPosition(p=>{const{latitude,longitude}=p.coords;$("you-coords").textContent=coords(latitude,longitude);visitorReverse(latitude,longitude);youTZ=Intl.DateTimeFormat().resolvedOptions().timeZone||youTZ;$("you-meta").textContent=youTZ.toUpperCase();$("you-source").textContent="SOURCE: GPS";tick()},ip,{enableHighAccuracy:true,timeout:20000,maximumAge:0})}gps();setInterval(tick,1000);
-</script></body></html>
+function gps(){if(!navigator.geolocation){ip();return}navigator.geolocation.getCurrentPosition(p=>{const{latitude,longitude}=p.coords;$("you-coords").textContent=coords(latitude,longitude);visitorReverse(latitude,longitude);youTZ=Intl.DateTimeFormat().resolvedOptions().timeZone||youTZ;$("you-meta").textContent=youTZ.toUpperCase();$("you-source").textContent="SOURCE: GPS";tick()},ip,{enableHighAccuracy:true,timeout:20000,maximumAge:0})}
+gps();setInterval(tick,1000);
+</script>
+</body>
+</html>
