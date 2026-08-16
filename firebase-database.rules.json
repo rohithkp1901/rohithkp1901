@@ -1,7 +1,7 @@
 {
   "rules": {
     "owner": {
-      ".read": "auth != null",
+      ".read": true,
       ".write": "auth != null && auth.token.email == 'rohithkp1901@gmail.com'"
     },
     "visitors": {
