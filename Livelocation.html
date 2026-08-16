@@ -9,11 +9,11 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   html,body { min-height:100%; background:var(--bg); color:var(--neon); font-family:"Courier New",Courier,monospace; display:flex; align-items:center; justify-content:center; padding:24px 12px; }
   body::before { content:""; position:fixed; inset:0; background:repeating-linear-gradient(0deg,rgba(0,255,65,.04) 0px,rgba(0,255,65,.04) 1px,transparent 1px,transparent 3px); pointer-events:none; }
-  .wrap { display:flex; gap:24px; flex-wrap:wrap; justify-content:center; }
-  .panel { text-align:center; padding:32px 44px; border:1px solid var(--neon); border-radius:6px; box-shadow:0 0 12px rgba(0,255,65,.35),inset 0 0 20px rgba(0,255,65,.05); background:rgba(0,255,65,.02); width:320px; }
+  .wrap { display:flex; gap:24px; flex-wrap:wrap; justify-content:center; width:100%; }
+  .panel { text-align:center; padding:28px 24px; border:1px solid var(--neon); border-radius:6px; box-shadow:0 0 12px rgba(0,255,65,.35),inset 0 0 20px rgba(0,255,65,.05); background:rgba(0,255,65,.02); width:min(420px,92vw); }
   .tag { font-size:12px; letter-spacing:3px; opacity:.8; margin-bottom:16px; }
-  .pin { font-size:26px; letter-spacing:1px; text-shadow:0 0 8px var(--neon),0 0 20px var(--neon); margin-bottom:10px; min-height:32px; }
-  .pin::before { content:"◉ "; }
+  .pin { font-size:clamp(13px,4vw,20px); line-height:1.5; letter-spacing:.5px; text-shadow:0 0 8px var(--neon),0 0 20px var(--neon); margin-bottom:10px; min-height:32px; overflow-wrap:break-word; }
+  .pin::before { content:"📍 "; }
   .coords { font-size:13px; opacity:.75; margin-bottom:16px; letter-spacing:1px; }
   .time { font-size:20px; letter-spacing:2px; margin-bottom:10px; text-shadow:0 0 6px var(--neon); }
   .meta { font-size:11px; letter-spacing:2px; opacity:.7; }
@@ -21,6 +21,12 @@
   .footer { margin-top:18px; font-size:10px; letter-spacing:2px; opacity:.55; }
   .blink { animation:blink 1.4s steps(2,start) infinite; }
   @keyframes blink { to { visibility:hidden; } }
+  @media (max-width:480px) {
+    html,body { padding:16px 8px; }
+    .panel { padding:24px 14px; }
+    .tag { font-size:10px; letter-spacing:2px; }
+    .pin { font-size:14px; letter-spacing:.3px; }
+  }
 </style>
 </head>
 <body>
@@ -64,21 +70,33 @@
 
     function getDistrict(place) {
       const administrative = place?.localityInfo?.administrative || [];
-      const state = (place.principalSubdivision || "").toLowerCase();
-      const country = (place.countryName || "").toLowerCase();
+      const informative = place?.localityInfo?.informative || [];
+      const state = (place?.principalSubdivision || "").trim().toLowerCase();
+      const country = (place?.countryName || "").trim().toLowerCase();
 
-      const candidates = administrative
+      const candidates = [...administrative, ...informative]
         .filter(item => item && item.name)
         .filter(item => {
-          const name = item.name.toLowerCase();
+          const name = item.name.trim().toLowerCase();
           return name !== state && name !== country;
         });
 
-      const district = candidates.find(item => /district|county/i.test(item.description || ""));
-      if (district) return district.name;
+      // OpenStreetMap convention: district-level administrative boundaries are normally level 6.
+      const levelSix = candidates.find(item => Number(item.adminLevel) === 6);
+      if (levelSix) return levelSix.name;
 
-      const indiaDistrict = candidates.find(item => /ernakulam/i.test(item.name));
-      if (indiaDistrict) return indiaDistrict.name;
+      const describedDistrict = candidates.find(item => /district|county/i.test(item.description || ""));
+      if (describedDistrict) return describedDistrict.name;
+
+      // Base-location fallback for the user's Kanayannur location.
+      const locality = String(place?.city || place?.locality || "").trim().toLowerCase();
+      if (locality === "kanayannur" && state === "kerala" && country.includes("india")) {
+        return "Ernakulam";
+      }
+
+      // Preserve the requested Ernakulam hierarchy if the API returns the district name without metadata.
+      const ernakulam = candidates.find(item => item.name.trim().toLowerCase() === "ernakulam");
+      if (ernakulam) return ernakulam.name;
 
       return "";
     }
@@ -112,6 +130,7 @@
             "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
             data.latitude + "&longitude=" + data.longitude + "&localityLanguage=en"
           );
+          if (!geo.ok) throw new Error("Reverse geocoding failed");
           const place = await geo.json();
 
           myTZ = place.localityInfo?.timeZone?.ianaTimeId || data.timezone || myTZ;
