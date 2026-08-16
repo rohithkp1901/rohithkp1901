@@ -1,1 +1,115 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Owner GPS Control — Rohith K P</title><style>body{margin:0;min-height:100vh;background:#05080b;color:#00ff41;font-family:"Courier New",monospace;display:grid;place-items:center;padding:20px}main{width:min(520px,94vw);border:1px solid #00ff41;padding:30px;border-radius:10px;box-shadow:0 0 30px #003b13;background:#07100a}h1{font-size:18px;letter-spacing:3px}p{color:#8da998;font-size:12px;line-height:1.7}input{width:100%;box-sizing:border-box;margin:7px 0;padding:12px;background:#05080b;border:1px solid #31523b;color:#fff;font:inherit}button{padding:12px 18px;margin-top:8px;background:#00ff41;color:#041006;border:0;font:inherit;font-weight:bold;cursor:pointer}.status{margin-top:18px;font-size:11px}.ok{color:#00ff41}.err{color:#ff7070}</style></head><body><main><h1>◉ OWNER GPS CONTROL</h1><p>This private page authenticates the owner device. After successful authentication, this phone becomes the owner GPS device and its live location is shared with visitors.</p><input id="email" type="email" value="rohithkp1901@gmail.com" autocomplete="username"><input id="password" type="password" placeholder="Firebase password" autocomplete="current-password"><button id="login">AUTHENTICATE OWNER</button><div id="status" class="status">● OWNER AUTHENTICATION REQUIRED</div></main><script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,setPersistence,browserLocalPersistence}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";const config={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};const OWNER="rohithkp1901@gmail.com",app=initializeApp(config),auth=getAuth(app),$=id=>document.getElementById(id);setPersistence(auth,browserLocalPersistence).catch(()=>{});onAuthStateChanged(auth,u=>{if(u&&u.email===OWNER){localStorage.setItem('rohith-owner-location','true');$('status').textContent='● OWNER AUTHENTICATED · STARTING LIVE GPS';$('status').className='status ok';setTimeout(()=>location.href='./live-clock.html',500)}});$('login').onclick=async()=>{const email=$('email').value.trim().toLowerCase(),password=$('password').value;if(email!==OWNER){$('status').textContent='● OWNER EMAIL REQUIRED';$('status').className='status err';return}try{await signInWithEmailAndPassword(auth,email,password)}catch(e){$('status').textContent='● LOGIN FAILED · '+e.code;$('status').className='status err'}};</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Owner GPS Control — Rohith K P</title>
+<style>
+body{margin:0;min-height:100vh;background:#05080b;color:#00ff41;font-family:"Courier New",monospace;display:grid;place-items:center;padding:20px}
+main{width:min(520px,94vw);border:1px solid #00ff41;padding:30px;border-radius:10px;box-shadow:0 0 30px #003b13;background:#07100a}
+h1{font-size:18px;letter-spacing:3px}p{color:#8da998;font-size:12px;line-height:1.7}
+input{width:100%;box-sizing:border-box;margin:7px 0;padding:12px;background:#05080b;border:1px solid #31523b;color:#fff;font:inherit}
+button{padding:12px 18px;margin-top:8px;background:#00ff41;color:#041006;border:0;font:inherit;font-weight:bold;cursor:pointer;width:100%}
+button:disabled{opacity:.55;cursor:wait}
+.status{margin-top:18px;font-size:11px;line-height:1.8}.ok{color:#00ff41}.err{color:#ff7070}.info{color:#e7c95a}
+.location{margin-top:20px;padding:16px;border:1px solid #183523;border-radius:8px;background:#05080b;display:none}
+.location strong{display:block;color:#00ff41;margin-bottom:8px;font-size:11px;letter-spacing:2px}.place{font-size:18px;font-weight:bold;color:#e8fff0}.accuracy{margin-top:8px;color:#8da998;font-size:10px}
+</style>
+</head>
+<body>
+<main>
+<h1>◉ OWNER GPS CONTROL</h1>
+<p>Open this page on the owner's phone. The first time, authenticate once and allow location access. After that, the browser remembers the owner session, so opening this page again starts the owner's live GPS automatically.</p>
+<input id="email" type="email" value="rohithkp1901@gmail.com" autocomplete="username">
+<input id="password" type="password" placeholder="Firebase password" autocomplete="current-password">
+<button id="login">AUTHENTICATE & START LIVE GPS</button>
+<div id="status" class="status info">● OWNER SESSION REQUIRED</div>
+<div id="location" class="location">
+<strong>👤 OWNER LOCATION · LIVE</strong>
+<div id="place" class="place">Locating…</div>
+<div id="accuracy" class="accuracy"></div>
+</div>
+</main>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,setPersistence,browserLocalPersistence}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{getDatabase,ref,set,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+const config={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
+const OWNER="rohithkp1901@gmail.com";
+const app=initializeApp(config),auth=getAuth(app),db=getDatabase(app);
+const $=id=>document.getElementById(id);
+let gpsStarted=false;
+
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
+
+function clean(parts){const out=[];for(const v of parts){if(v&&typeof v==="string"&&!out.some(x=>x.toLowerCase()===v.trim().toLowerCase()))out.push(v.trim())}return out.join(", ")}
+function formatNominatim(a){return clean([a.county||a.city_district||a.municipality||a.city||a.town||a.village||a.locality||a.suburb,a.state_district||a.district||a.region,a.state,a.country])}
+function formatBigData(d){return clean([d.city||d.locality,d.principalSubdivision,d.countryName])}
+
+async function reverse(lat,lon){
+ const nom=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
+ const bdc=`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+ try{
+  const results=await Promise.allSettled([fetch(nom),fetch(bdc)]);
+  let a="",b="";
+  if(results[0].status==="fulfilled"&&results[0].value.ok){const d=await results[0].value.json();a=formatNominatim(d.address||{})}
+  if(results[1].status==="fulfilled"&&results[1].value.ok){const d=await results[1].value.json();b=formatBigData(d)}
+  return a||b||"Location name unavailable";
+ }catch{return"Location name unavailable"}
+}
+
+function startOwnerGPS(){
+ if(gpsStarted)return;
+ gpsStarted=true;
+ if(!navigator.geolocation){$("status").textContent="● GPS NOT SUPPORTED";$("status").className="status err";return}
+ $("login").disabled=true;
+ $("login").textContent="GPS ACTIVE · KEEP THIS PAGE OPEN";
+ $("status").textContent="● REQUESTING OWNER LOCATION PERMISSION…";
+ $("status").className="status info";
+ $("location").style.display="block";
+ navigator.geolocation.watchPosition(async p=>{
+  const{latitude,longitude,accuracy}=p.coords;
+  const place=await reverse(latitude,longitude);
+  try{
+   const r=ref(db,"owner");
+   await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp()});
+   await onDisconnect(r).update({online:false});
+   $("place").textContent="📍 "+place;
+   $("accuracy").textContent=`GPS accuracy ±${Math.round(accuracy)} m · Live location shared with visitors`;
+   $("status").textContent="● OWNER GPS LIVE · LOCATION SHARED";
+   $("status").className="status ok";
+  }catch(e){
+   console.error(e);
+   $("status").textContent="● LOCATION SHARE FAILED";
+   $("status").className="status err";
+  }
+ },e=>{
+  const msg=e.code===1?"LOCATION PERMISSION REQUIRED":e.code===2?"LOCATION UNAVAILABLE":e.code===3?"LOCATION TIMEOUT":"GPS ERROR";
+  $("status").textContent="● "+msg;
+  $("status").className="status err";
+  $("login").disabled=false;
+  $("login").textContent="TRY GPS AGAIN";
+  gpsStarted=false;
+ },{enableHighAccuracy:true,maximumAge:0,timeout:30000});
+}
+
+onAuthStateChanged(auth,u=>{
+ if(u&&u.email===OWNER){
+  localStorage.setItem("rohith-owner-location","true");
+  $("status").textContent="● OWNER AUTHENTICATED · STARTING GPS…";
+  $("status").className="status ok";
+  startOwnerGPS();
+ }
+});
+
+$("login").onclick=async()=>{
+ const email=$("email").value.trim().toLowerCase(),password=$("password").value;
+ if(email!==OWNER){$("status").textContent="● OWNER EMAIL REQUIRED";$("status").className="status err";return}
+ if(!password){$("status").textContent="● ENTER FIREBASE PASSWORD";$("status").className="status err";return}
+ $("login").disabled=true;$("login").textContent="AUTHENTICATING…";
+ try{await signInWithEmailAndPassword(auth,email,password)}catch(e){$("status").textContent="● LOGIN FAILED · "+e.code;$("status").className="status err";$("login").disabled=false;$("login").textContent="AUTHENTICATE & START LIVE GPS"}
+};
+</script>
+</body>
+</html>
