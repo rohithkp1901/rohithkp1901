@@ -62,9 +62,6 @@
       return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
     }
 
-    // BigDataCloud returns the state in principalSubdivision and the
-    // district/county in localityInfo.administrative.  Prefer the locality
-    // (for example Kanayannur), then add the district (Ernakulam), state and country.
     function getDistrict(place) {
       const administrative = place?.localityInfo?.administrative || [];
       const state = (place.principalSubdivision || "").toLowerCase();
@@ -80,8 +77,6 @@
       const district = candidates.find(item => /district|county/i.test(item.description || ""));
       if (district) return district.name;
 
-      // India commonly exposes the district as an administrative level even
-      // when the API description is not translated as "district".
       const indiaDistrict = candidates.find(item => /ernakulam/i.test(item.name));
       if (indiaDistrict) return indiaDistrict.name;
 
@@ -102,8 +97,8 @@
     function renderPlace(elementId, place) {
       const parts = placeParts(place);
       document.getElementById(elementId).textContent = parts.length
-        ? parts.join(", ").toUpperCase()
-        : "UNKNOWN LOCATION";
+        ? parts.join(", ")
+        : "Unknown location";
     }
 
     async function loadMyLocation() {
@@ -123,12 +118,12 @@
           renderPlace("my-pin", place);
         } catch (geoErr) {
           myTZ = data.timezone || myTZ;
-          document.getElementById("my-pin").textContent = "UPDATING...";
+          document.getElementById("my-pin").textContent = "Updating...";
         }
 
         document.getElementById("my-meta").textContent = myTZ.toUpperCase();
       } catch (e) {
-        document.getElementById("my-pin").textContent = "LOCATION UNAVAILABLE";
+        document.getElementById("my-pin").textContent = "Location unavailable";
       }
       tick();
     }
@@ -136,8 +131,8 @@
     function renderYouPlace(place) {
       const parts = placeParts(place);
       document.getElementById("you-pin").textContent = parts.length
-        ? parts.join(", ").toUpperCase()
-        : "UNKNOWN LOCATION";
+        ? parts.join(", ")
+        : "Unknown location";
     }
 
     async function reverseGeocode(lat, lon) {
@@ -164,7 +159,7 @@
         document.getElementById("you-meta").textContent = youTZ.toUpperCase();
         document.getElementById("you-source").textContent = "SOURCE: IP-BASED";
       } catch (e) {
-        document.getElementById("you-pin").textContent = "LOCATION UNAVAILABLE";
+        document.getElementById("you-pin").textContent = "Location unavailable";
       }
       tick();
     }
