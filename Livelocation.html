@@ -5,234 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Rohith K P — Live Location</title>
 <style>
-  :root { --neon:#00ff41; --bg:#05080b; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  html,body { min-height:100%; background:var(--bg); color:var(--neon); font-family:"Courier New",Courier,monospace; display:flex; align-items:center; justify-content:center; padding:24px 12px; }
-  body::before { content:""; position:fixed; inset:0; background:repeating-linear-gradient(0deg,rgba(0,255,65,.04) 0px,rgba(0,255,65,.04) 1px,transparent 1px,transparent 3px); pointer-events:none; }
-  .wrap { display:flex; gap:24px; flex-wrap:wrap; justify-content:center; width:100%; }
-  .panel { text-align:center; padding:28px 24px; border:1px solid var(--neon); border-radius:6px; box-shadow:0 0 12px rgba(0,255,65,.35),inset 0 0 20px rgba(0,255,65,.05); background:rgba(0,255,65,.02); width:min(420px,92vw); }
-  .tag { font-size:12px; letter-spacing:3px; opacity:.8; margin-bottom:16px; }
-  .pin { font-size:clamp(13px,4vw,20px); line-height:1.5; letter-spacing:.5px; text-shadow:0 0 8px var(--neon),0 0 20px var(--neon); margin-bottom:10px; min-height:32px; overflow-wrap:break-word; }
-  .pin::before { content:"📍 "; }
-  .coords { font-size:13px; opacity:.75; margin-bottom:16px; letter-spacing:1px; }
-  .time { font-size:20px; letter-spacing:2px; margin-bottom:10px; text-shadow:0 0 6px var(--neon); }
-  .meta { font-size:11px; letter-spacing:2px; opacity:.7; }
-  .source { margin-top:10px; font-size:10px; letter-spacing:1px; opacity:.45; }
-  .footer { margin-top:18px; font-size:10px; letter-spacing:2px; opacity:.55; }
-  .blink { animation:blink 1.4s steps(2,start) infinite; }
-  @keyframes blink { to { visibility:hidden; } }
-  @media (max-width:480px) {
-    html,body { padding:16px 8px; }
-    .panel { padding:24px 14px; }
-    .tag { font-size:10px; letter-spacing:2px; }
-    .pin { font-size:14px; letter-spacing:.3px; }
-  }
+:root{--neon:#00ff41;--bg:#05080b}*{box-sizing:border-box;margin:0;padding:0}html,body{min-height:100%;background:var(--bg);color:var(--neon);font-family:"Courier New",Courier,monospace;display:flex;align-items:center;justify-content:center;padding:24px 12px}body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(0deg,rgba(0,255,65,.04) 0,rgba(0,255,65,.04) 1px,transparent 1px,transparent 3px);pointer-events:none}.wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;width:100%}.panel{text-align:center;padding:28px 24px;border:1px solid var(--neon);border-radius:6px;box-shadow:0 0 12px rgba(0,255,65,.35),inset 0 0 20px rgba(0,255,65,.05);background:rgba(0,255,65,.02);width:min(420px,92vw)}.tag{font-size:12px;letter-spacing:3px;opacity:.8;margin-bottom:16px}.pin{font-size:clamp(13px,4vw,20px);line-height:1.5;letter-spacing:.5px;text-shadow:0 0 8px var(--neon),0 0 20px var(--neon);margin-bottom:10px;min-height:32px;overflow-wrap:break-word}.pin::before{content:"📍 "}.coords{font-size:13px;opacity:.75;margin-bottom:16px;letter-spacing:1px}.time{font-size:20px;letter-spacing:2px;margin-bottom:10px;text-shadow:0 0 6px var(--neon)}.meta{font-size:11px;letter-spacing:2px;opacity:.7}.source{margin-top:10px;font-size:10px;letter-spacing:1px;opacity:.45}.footer{margin-top:18px;font-size:10px;letter-spacing:2px;opacity:.55}.blink{animation:blink 1.4s steps(2,start) infinite}@keyframes blink{to{visibility:hidden}}@media(max-width:480px){html,body{padding:16px 8px}.panel{padding:24px 14px}.tag{font-size:10px;letter-spacing:2px}.pin{font-size:14px;letter-spacing:.3px}}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="panel">
-      <div class="tag">ROHITHKP // BASE LOCATION</div>
-      <div class="pin" id="my-pin">LOADING...</div>
-      <div class="coords" id="my-coords">--</div>
-      <div class="time" id="my-clock">00:00:00 AM</div>
-      <div class="meta" id="my-meta">--</div>
-      <div class="footer"><span class="blink">●</span>&nbsp; LOCATION LOCKED · SYSTEM ONLINE</div>
-    </div>
+<div class="wrap">
+<div class="panel">
+<div class="tag">👤 OWNER LOCATION · LIVE</div>
+<div class="pin" id="my-pin">LOCATING OWNER...</div>
+<div class="coords" id="my-coords">--</div>
+<div class="time" id="my-clock">00:00:00 AM</div>
+<div class="meta" id="my-meta">WAITING FOR OWNER GPS</div>
+<div class="footer"><span class="blink">●</span>&nbsp; LIVE · FIREBASE REALTIME</div>
+</div>
+<div class="panel">
+<div class="tag">👥 VISITOR · YOUR LOCATION</div>
+<div class="pin" id="you-pin">LOCATING...</div>
+<div class="coords" id="you-coords">--</div>
+<div class="time" id="you-clock">00:00:00 AM</div>
+<div class="meta" id="you-meta">--</div>
+<div class="source" id="you-source"></div>
+<div class="footer"><span class="blink">●</span>&nbsp; PRIVATE · GPS</div>
+</div>
+</div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb4h",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
+const app=initializeApp(firebaseConfig),db=getDatabase(app);
+let myTZ="Asia/Kolkata",youTZ=Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";
+const $=id=>document.getElementById(id);
+function fmt(tz){return new Date().toLocaleTimeString("en-US",{timeZone:tz,hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true})}
+function tick(){$("my-clock").textContent=fmt(myTZ);$("you-clock").textContent=fmt(youTZ)}
+function coordsText(lat,lon){return Math.abs(Number(lat)).toFixed(4)+"° "+(Number(lat)>=0?"N":"S")+", "+Math.abs(Number(lon)).toFixed(4)+"° "+(Number(lon)>=0?"E":"W")}
+function clean(parts){const out=[];for(const v of parts){if(v&&String(v).trim()&&!out.some(x=>x.toLowerCase()===String(v).trim().toLowerCase()))out.push(String(v).trim())}return out.join(", ")}
+function getDistrict(d){const admins=[...(d?.localityInfo?.administrative||[]),...(d?.localityInfo?.informative||[])];const state=String(d?.principalSubdivision||"").trim().toLowerCase();const locality=String(d?.locality||"").trim().toLowerCase();const city=String(d?.city||"").trim().toLowerCase();if(state==="kerala"&&(locality==="kanayannur"||city==="kanayannur"))return"Ernakulam";const c=admins.filter(x=>x&&x.name&&String(x.name).trim().toLowerCase()!==state);const l6=c.find(x=>Number(x.adminLevel)===6);if(l6)return l6.name;const district=c.find(x=>/district|county/i.test(x.description||""));if(district)return district.name;const ernakulam=c.find(x=>String(x.name).trim().toLowerCase()==="ernakulam");return ernakulam?.name||""}
+function placeParts(d){const locality=d?.locality||d?.city||"";const city=d?.city||"";const district=getDistrict(d);return [...new Set([locality,city!==locality?city:"",district,d?.principalSubdivision||"",d?.countryName||""] .filter(Boolean).map(String))]}
+function renderPlace(id,d){const parts=placeParts(d);$(id).textContent=parts.length?parts.join(", "):"Location name unavailable"}
+async function reverseGeocode(lat,lon){try{const r=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);if(!r.ok)throw Error();return await r.json()}catch{return null}}
 
-    <div class="panel">
-      <div class="tag">VISITOR // YOUR LOCATION</div>
-      <div class="pin" id="you-pin">LOCATING...</div>
-      <div class="coords" id="you-coords">--</div>
-      <div class="time" id="you-clock">00:00:00 AM</div>
-      <div class="meta" id="you-meta">--</div>
-      <div class="source" id="you-source"></div>
-      <div class="footer"><span class="blink">●</span>&nbsp; TRACKING · AUTO REFRESH</div>
-    </div>
-  </div>
+// OWNER: read the owner's current GPS directly from Firebase Realtime Database.
+// The owner.html page writes this node continuously while the owner has GPS active.
+onValue(ref(db,"owner"),async snap=>{const data=snap.val();if(!data||data.online===false){$("my-pin").textContent="OWNER GPS OFFLINE";$("my-meta").textContent="WAITING FOR OWNER LOCATION";return}let place=data.place||"";if(!place&&data.latitude!=null&&data.longitude!=null){const geo=await reverseGeocode(data.latitude,data.longitude);if(geo)place=placeParts(geo).join(", ")}$("my-pin").textContent=place||"Owner location updating...";if(data.latitude!=null&&data.longitude!=null&&data.longitude!=null)$("my-coords").textContent=coordsText(data.latitude,data.longitude);myTZ=data.timezone||myTZ;$("my-meta").textContent=`● LIVE · ACCURACY ±${Math.round(Number(data.accuracy||0))} m`;tick()});
 
-  <script>
-    let myTZ = "Asia/Kolkata";
-    let youTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-
-    function fmt(tz) {
-      return new Date().toLocaleTimeString("en-US", { timeZone:tz, hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:true });
-    }
-
-    function tick() {
-      document.getElementById("my-clock").textContent = fmt(myTZ);
-      document.getElementById("you-clock").textContent = fmt(youTZ);
-    }
-
-    function coordsText(lat, lon) {
-      return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
-    }
-
-    /*
-     * Build the hierarchy as:
-     * Kanayannur, Ernakulam, Kerala, India
-     *
-     * Important: BigDataCloud may return Kanayannur in either
-     * `locality` or `city`. We inspect BOTH fields before choosing
-     * the district so a later refresh cannot drop Ernakulam.
-     */
-    function getDistrict(place) {
-      const administrative = place?.localityInfo?.administrative || [];
-      const informative = place?.localityInfo?.informative || [];
-      const state = (place?.principalSubdivision || "").trim().toLowerCase();
-      const country = (place?.countryName || "").trim().toLowerCase();
-      const localityName = String(place?.locality || "").trim().toLowerCase();
-      const cityName = String(place?.city || "").trim().toLowerCase();
-
-      // Always preserve the requested Kerala hierarchy for Kanayannur.
-      // This is deliberately based on BOTH API fields because the API can
-      // change which field contains "Kanayannur" between requests.
-      if (state === "kerala" && (localityName === "kanayannur" || cityName === "kanayannur")) {
-        return "Ernakulam";
-      }
-
-      const candidates = [...administrative, ...informative]
-        .filter(item => item && item.name)
-        .filter(item => {
-          const name = item.name.trim().toLowerCase();
-          return name !== state && name !== country;
-        });
-
-      const levelSix = candidates.find(item => Number(item.adminLevel) === 6);
-      if (levelSix) return levelSix.name;
-
-      const describedDistrict = candidates.find(item => /district|county/i.test(item.description || ""));
-      if (describedDistrict) return describedDistrict.name;
-
-      const ernakulam = candidates.find(item => item.name.trim().toLowerCase() === "ernakulam");
-      if (ernakulam) return ernakulam.name;
-
-      return "";
-    }
-
-    function placeParts(place) {
-      // Prefer the most specific locality first. If locality is absent,
-      // fall back to city. This keeps Kanayannur instead of replacing it
-      // with Ernakulam when the API supplies both.
-      const locality = place?.locality || place?.city || "";
-      const city = place?.city || "";
-      const district = getDistrict(place);
-      const state = place?.principalSubdivision || "";
-      const country = place?.countryName || "";
-
-      const values = [locality];
-
-      // Add the city only when it is genuinely different from the locality.
-      if (city && city.trim().toLowerCase() !== locality.trim().toLowerCase()) {
-        values.push(city);
-      }
-
-      if (district) values.push(district);
-      if (state) values.push(state);
-      if (country) values.push(country);
-
-      return values
-        .filter(Boolean)
-        .filter((value, index, array) => array.findIndex(v => v.toLowerCase() === value.toLowerCase()) === index);
-    }
-
-    function renderPlace(elementId, place) {
-      const parts = placeParts(place);
-      document.getElementById(elementId).textContent = parts.length
-        ? parts.join(", ")
-        : "Unknown location";
-    }
-
-    async function loadMyLocation() {
-      try {
-        const res = await fetch("location.json?_=" + Date.now(), { cache:"no-store" });
-        const data = await res.json();
-        document.getElementById("my-coords").textContent = coordsText(data.latitude, data.longitude);
-
-        try {
-          const geo = await fetch(
-            "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
-            data.latitude + "&longitude=" + data.longitude + "&localityLanguage=en"
-          );
-          if (!geo.ok) throw new Error("Reverse geocoding failed");
-          const place = await geo.json();
-
-          myTZ = place.localityInfo?.timeZone?.ianaTimeId || data.timezone || myTZ;
-          renderPlace("my-pin", place);
-        } catch (geoErr) {
-          myTZ = data.timezone || myTZ;
-          document.getElementById("my-pin").textContent = "Updating...";
-        }
-
-        document.getElementById("my-meta").textContent = myTZ.toUpperCase();
-      } catch (e) {
-        document.getElementById("my-pin").textContent = "Location unavailable";
-      }
-      tick();
-    }
-
-    function renderYouPlace(place) {
-      const parts = placeParts(place);
-      document.getElementById("you-pin").textContent = parts.length
-        ? parts.join(", ")
-        : "Unknown location";
-    }
-
-    async function reverseGeocode(lat, lon) {
-      try {
-        const res = await fetch(
-          "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
-          lat + "&longitude=" + lon + "&localityLanguage=en"
-        );
-        if (!res.ok) throw new Error("Reverse geocoding failed");
-        const data = await res.json();
-        renderYouPlace(data);
-      } catch (e) {
-        renderYouPlace({});
-      }
-    }
-
-    async function locateByIP() {
-      try {
-        const res = await fetch("https://ipapi.co/json/");
-        const data = await res.json();
-        renderYouPlace({ city:data.city, principalSubdivision:data.region, countryName:data.country_name });
-        document.getElementById("you-coords").textContent = coordsText(data.latitude, data.longitude);
-        youTZ = data.timezone || youTZ;
-        document.getElementById("you-meta").textContent = youTZ.toUpperCase();
-        document.getElementById("you-source").textContent = "SOURCE: IP-BASED";
-      } catch (e) {
-        document.getElementById("you-pin").textContent = "Location unavailable";
-      }
-      tick();
-    }
-
-    function locateByGPS() {
-      if (!navigator.geolocation) {
-        locateByIP();
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        function (pos) {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          document.getElementById("you-coords").textContent = coordsText(lat, lon);
-          reverseGeocode(lat, lon);
-          youTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || youTZ;
-          document.getElementById("you-meta").textContent = youTZ.toUpperCase();
-          document.getElementById("you-source").textContent = "SOURCE: GPS";
-          tick();
-        },
-        function () { locateByIP(); },
-        { enableHighAccuracy:true, timeout:10000, maximumAge:0 }
-      );
-    }
-
-    loadMyLocation();
-    locateByGPS();
-    setInterval(tick, 1000);
-    setInterval(loadMyLocation, 60000);
-  </script>
+function renderYouPlace(d){renderPlace("you-pin",d)}
+async function reverseYou(lat,lon){try{const r=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);if(!r.ok)throw Error();renderYouPlace(await r.json())}catch{$("you-pin").textContent="Location name unavailable"}}
+function locateByIP(){fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{renderYouPlace({city:d.city,principalSubdivision:d.region,countryName:d.country_name});if(d.latitude!=null)$("you-coords").textContent=coordsText(d.latitude,d.longitude);youTZ=d.timezone||youTZ;$("you-meta").textContent=youTZ.toUpperCase();$("you-source").textContent="SOURCE: IP-BASED";tick()}).catch(()=>$("you-pin").textContent="Location unavailable")}
+function locateByGPS(){if(!navigator.geolocation){locateByIP();return}navigator.geolocation.getCurrentPosition(p=>{const{latitude,longitude}=p.coords;$("you-coords").textContent=coordsText(latitude,longitude);reverseYou(latitude,longitude);youTZ=Intl.DateTimeFormat().resolvedOptions().timeZone||youTZ;$("you-meta").textContent=youTZ.toUpperCase();$("you-source").textContent="SOURCE: GPS";tick()},()=>locateByIP(),{enableHighAccuracy:true,timeout:20000,maximumAge:0})}
+locateByGPS();setInterval(tick,1000);
+</script>
 </body>
 </html>
