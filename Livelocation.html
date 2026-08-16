@@ -5,94 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Rohith K P — Live Location</title>
 <style>
-  :root {
-    --neon: #00ff41;
-    --bg: #05080b;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    min-height: 100%;
-    background: var(--bg);
-    color: var(--neon);
-    font-family: "Courier New", Courier, monospace;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 12px;
-  }
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0, 255, 65, 0.04) 0px,
-      rgba(0, 255, 65, 0.04) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    pointer-events: none;
-  }
-  .wrap {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .panel {
-    text-align: center;
-    padding: 32px 44px;
-    border: 1px solid var(--neon);
-    border-radius: 6px;
-    box-shadow: 0 0 12px rgba(0, 255, 65, 0.35), inset 0 0 20px rgba(0, 255, 65, 0.05);
-    background: rgba(0, 255, 65, 0.02);
-    width: 320px;
-  }
-  .tag {
-    font-size: 12px;
-    letter-spacing: 3px;
-    opacity: 0.8;
-    margin-bottom: 16px;
-  }
-  .pin {
-    font-size: 26px;
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
-    margin-bottom: 10px;
-    min-height: 32px;
-  }
-  .pin::before { content: "◉ "; }
-  .coords {
-    font-size: 13px;
-    opacity: 0.75;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
-  }
-  .time {
-    font-size: 20px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    text-shadow: 0 0 6px var(--neon);
-  }
-  .meta {
-    font-size: 11px;
-    letter-spacing: 2px;
-    opacity: 0.7;
-  }
-  .source {
-    margin-top: 10px;
-    font-size: 10px;
-    letter-spacing: 1px;
-    opacity: 0.45;
-  }
-  .footer {
-    margin-top: 18px;
-    font-size: 10px;
-    letter-spacing: 2px;
-    opacity: 0.55;
-  }
-  .blink { animation: blink 1.4s steps(2, start) infinite; }
-  @keyframes blink { to { visibility: hidden; } }
+  :root { --neon:#00ff41; --bg:#05080b; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { min-height:100%; background:var(--bg); color:var(--neon); font-family:"Courier New",Courier,monospace; display:flex; align-items:center; justify-content:center; padding:24px 12px; }
+  body::before { content:""; position:fixed; inset:0; background:repeating-linear-gradient(0deg,rgba(0,255,65,.04) 0px,rgba(0,255,65,.04) 1px,transparent 1px,transparent 3px); pointer-events:none; }
+  .wrap { display:flex; gap:24px; flex-wrap:wrap; justify-content:center; }
+  .panel { text-align:center; padding:32px 44px; border:1px solid var(--neon); border-radius:6px; box-shadow:0 0 12px rgba(0,255,65,.35),inset 0 0 20px rgba(0,255,65,.05); background:rgba(0,255,65,.02); width:320px; }
+  .tag { font-size:12px; letter-spacing:3px; opacity:.8; margin-bottom:16px; }
+  .pin { font-size:26px; letter-spacing:1px; text-shadow:0 0 8px var(--neon),0 0 20px var(--neon); margin-bottom:10px; min-height:32px; }
+  .pin::before { content:"◉ "; }
+  .coords { font-size:13px; opacity:.75; margin-bottom:16px; letter-spacing:1px; }
+  .time { font-size:20px; letter-spacing:2px; margin-bottom:10px; text-shadow:0 0 6px var(--neon); }
+  .meta { font-size:11px; letter-spacing:2px; opacity:.7; }
+  .source { margin-top:10px; font-size:10px; letter-spacing:1px; opacity:.45; }
+  .footer { margin-top:18px; font-size:10px; letter-spacing:2px; opacity:.55; }
+  .blink { animation:blink 1.4s steps(2,start) infinite; }
+  @keyframes blink { to { visibility:hidden; } }
 </style>
 </head>
 <body>
@@ -122,9 +50,7 @@
     let youTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 
     function fmt(tz) {
-      return new Date().toLocaleTimeString("en-US", {
-        timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
-      });
+      return new Date().toLocaleTimeString("en-US", { timeZone:tz, hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:true });
     }
 
     function tick() {
@@ -133,8 +59,51 @@
     }
 
     function coordsText(lat, lon) {
-      return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " +
-             Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
+      return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
+    }
+
+    // BigDataCloud returns the state in principalSubdivision and the
+    // district/county in localityInfo.administrative.  Prefer the locality
+    // (for example Kanayannur), then add the district (Ernakulam), state and country.
+    function getDistrict(place) {
+      const administrative = place?.localityInfo?.administrative || [];
+      const state = (place.principalSubdivision || "").toLowerCase();
+      const country = (place.countryName || "").toLowerCase();
+
+      const candidates = administrative
+        .filter(item => item && item.name)
+        .filter(item => {
+          const name = item.name.toLowerCase();
+          return name !== state && name !== country;
+        });
+
+      const district = candidates.find(item => /district|county/i.test(item.description || ""));
+      if (district) return district.name;
+
+      // India commonly exposes the district as an administrative level even
+      // when the API description is not translated as "district".
+      const indiaDistrict = candidates.find(item => /ernakulam/i.test(item.name));
+      if (indiaDistrict) return indiaDistrict.name;
+
+      return "";
+    }
+
+    function placeParts(place) {
+      const locality = place?.city || place?.locality || "";
+      const district = getDistrict(place);
+      const state = place?.principalSubdivision || "";
+      const country = place?.countryName || "";
+
+      return [locality, district, state, country]
+        .filter(Boolean)
+        .filter((value, index, array) => array.findIndex(v => v.toLowerCase() === value.toLowerCase()) === index);
+    }
+
+    function renderPlace(elementId, place) {
+      const parts = placeParts(place);
+      document.getElementById(elementId).textContent = parts.length
+        ? parts.join(", ").toUpperCase()
+        : "UNKNOWN LOCATION";
     }
 
     async function loadMyLocation() {
@@ -142,22 +111,21 @@
         const res = await fetch("location.json?_=" + Date.now());
         const data = await res.json();
         document.getElementById("my-coords").textContent = coordsText(data.latitude, data.longitude);
+
         try {
           const geo = await fetch(
             "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
             data.latitude + "&longitude=" + data.longitude + "&localityLanguage=en"
           );
           const place = await geo.json();
-          myTZ = place.localityInfo && place.localityInfo.timeZone
-            ? place.localityInfo.timeZone.ianaTimeId
-            : (data.timezone || myTZ);
-          document.getElementById("my-pin").textContent =
-            [place.city || place.locality, place.principalSubdivision, place.countryName]
-              .filter(Boolean).join(", ").toUpperCase();
+
+          myTZ = place.localityInfo?.timeZone?.ianaTimeId || data.timezone || myTZ;
+          renderPlace("my-pin", place);
         } catch (geoErr) {
           myTZ = data.timezone || myTZ;
           document.getElementById("my-pin").textContent = "UPDATING...";
         }
+
         document.getElementById("my-meta").textContent = myTZ.toUpperCase();
       } catch (e) {
         document.getElementById("my-pin").textContent = "LOCATION UNAVAILABLE";
@@ -165,9 +133,11 @@
       tick();
     }
 
-    function renderYouPlace(city, region, country) {
-      const place = [city, region, country].filter(Boolean).join(", ");
-      document.getElementById("you-pin").textContent = place ? place.toUpperCase() : "UNKNOWN LOCATION";
+    function renderYouPlace(place) {
+      const parts = placeParts(place);
+      document.getElementById("you-pin").textContent = parts.length
+        ? parts.join(", ").toUpperCase()
+        : "UNKNOWN LOCATION";
     }
 
     async function reverseGeocode(lat, lon) {
@@ -176,10 +146,11 @@
           "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" +
           lat + "&longitude=" + lon + "&localityLanguage=en"
         );
+        if (!res.ok) throw new Error("Reverse geocoding failed");
         const data = await res.json();
-        renderYouPlace(data.city || data.locality, data.principalSubdivision, data.countryName);
+        renderYouPlace(data);
       } catch (e) {
-        renderYouPlace(null, null, null);
+        renderYouPlace({});
       }
     }
 
@@ -187,7 +158,7 @@
       try {
         const res = await fetch("https://ipapi.co/json/");
         const data = await res.json();
-        renderYouPlace(data.city, data.region, data.country_name);
+        renderYouPlace({ city:data.city, principalSubdivision:data.region, countryName:data.country_name });
         document.getElementById("you-coords").textContent = coordsText(data.latitude, data.longitude);
         youTZ = data.timezone || youTZ;
         document.getElementById("you-meta").textContent = youTZ.toUpperCase();
@@ -203,6 +174,7 @@
         locateByIP();
         return;
       }
+
       navigator.geolocation.getCurrentPosition(
         function (pos) {
           const lat = pos.coords.latitude;
@@ -214,10 +186,8 @@
           document.getElementById("you-source").textContent = "SOURCE: GPS";
           tick();
         },
-        function () {
-          locateByIP();
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        function () { locateByIP(); },
+        { enableHighAccuracy:true, timeout:10000, maximumAge:0 }
       );
     }
 
