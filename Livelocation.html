@@ -68,12 +68,28 @@
       return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
     }
 
+    /*
+     * Build the hierarchy as:
+     * Kanayannur, Ernakulam, Kerala, India
+     *
+     * Important: BigDataCloud may return Kanayannur in either
+     * `locality` or `city`. We inspect BOTH fields before choosing
+     * the district so a later refresh cannot drop Ernakulam.
+     */
     function getDistrict(place) {
       const administrative = place?.localityInfo?.administrative || [];
       const informative = place?.localityInfo?.informative || [];
       const state = (place?.principalSubdivision || "").trim().toLowerCase();
       const country = (place?.countryName || "").trim().toLowerCase();
-      const locality = String(place?.city || place?.locality || "").trim().toLowerCase();
+      const localityName = String(place?.locality || "").trim().toLowerCase();
+      const cityName = String(place?.city || "").trim().toLowerCase();
+
+      // Always preserve the requested Kerala hierarchy for Kanayannur.
+      // This is deliberately based on BOTH API fields because the API can
+      // change which field contains "Kanayannur" between requests.
+      if (state === "kerala" && (localityName === "kanayannur" || cityName === "kanayannur")) {
+        return "Ernakulam";
+      }
 
       const candidates = [...administrative, ...informative]
         .filter(item => item && item.name)
@@ -81,13 +97,6 @@
           const name = item.name.trim().toLowerCase();
           return name !== state && name !== country;
         });
-
-      // Explicitly preserve the requested Kerala hierarchy for Kanayannur.
-      // This prevents the API response from collapsing to:
-      // Kanayannur, Kerala, India
-      if (locality === "kanayannur" && state === "kerala") {
-        return "Ernakulam";
-      }
 
       const levelSix = candidates.find(item => Number(item.adminLevel) === 6);
       if (levelSix) return levelSix.name;
@@ -102,12 +111,27 @@
     }
 
     function placeParts(place) {
-      const locality = place?.city || place?.locality || "";
+      // Prefer the most specific locality first. If locality is absent,
+      // fall back to city. This keeps Kanayannur instead of replacing it
+      // with Ernakulam when the API supplies both.
+      const locality = place?.locality || place?.city || "";
+      const city = place?.city || "";
       const district = getDistrict(place);
       const state = place?.principalSubdivision || "";
       const country = place?.countryName || "";
 
-      return [locality, district, state, country]
+      const values = [locality];
+
+      // Add the city only when it is genuinely different from the locality.
+      if (city && city.trim().toLowerCase() !== locality.trim().toLowerCase()) {
+        values.push(city);
+      }
+
+      if (district) values.push(district);
+      if (state) values.push(state);
+      if (country) values.push(country);
+
+      return values
         .filter(Boolean)
         .filter((value, index, array) => array.findIndex(v => v.toLowerCase() === value.toLowerCase()) === index);
     }
@@ -121,7 +145,7 @@
 
     async function loadMyLocation() {
       try {
-        const res = await fetch("location.json?_=" + Date.now());
+        const res = await fetch("location.json?_=" + Date.now(), { cache:"no-store" });
         const data = await res.json();
         document.getElementById("my-coords").textContent = coordsText(data.latitude, data.longitude);
 
