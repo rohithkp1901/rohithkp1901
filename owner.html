@@ -149,15 +149,10 @@ async function acceptOwner(user,result){
 }
 
 async function linkPendingGithub(){
- if(!pendingGithubCredential)return;
+ if(!pendingGithubCredential)throw new Error("GitHub credential was not captured");
  const password=prompt(`Enter the Firebase password for ${OWNER_EMAIL} to connect your GitHub account:`);
- if(password===null){
-  pendingGithubCredential=null;
-  return;
- }
- if(!password){
-  throw new Error("Firebase owner password is required to link GitHub");
- }
+ if(password===null){pendingGithubCredential=null;throw new Error("OWNER_PASSWORD_CANCELLED")}
+ if(!password.trim())throw new Error("OWNER_PASSWORD_REQUIRED");
  $("status").textContent="● SIGNING IN TO EXISTING OWNER ACCOUNT…";
  $("status").className="status info";
  const existing=await signInWithEmailAndPassword(auth,OWNER_EMAIL,password);
@@ -166,8 +161,9 @@ async function linkPendingGithub(){
  }catch(e){
   if(e.code!=="auth/provider-already-linked")throw e;
  }
+ const linked=auth.currentUser||existing.user;
  pendingGithubCredential=null;
- await acceptOwner(existing.user);
+ await acceptOwner(linked);
 }
 
 async function loginWithGitHub(){
@@ -184,13 +180,19 @@ async function loginWithGitHub(){
   await acceptOwner(result.user,result);
  }catch(e){
   console.error("GitHub popup sign-in failed",e);
-  if(e.code==="auth/account-exists-with-different-credential"&&e.credential){
-   pendingGithubCredential=e.credential;
-   try{
-    await linkPendingGithub();
-   }catch(linkError){
-    console.error("GitHub account linking failed",linkError);
-    $("status").textContent=`● OWNER ACCOUNT LINK FAILED · ${linkError.code||linkError.message||"ERROR"}`;
+  if(e.code==="auth/account-exists-with-different-credential"){
+   pendingGithubCredential=e.credential||GithubAuthProvider.credentialFromError(e);
+   if(pendingGithubCredential){
+    try{
+     await linkPendingGithub();
+     return;
+    }catch(linkError){
+     console.error("GitHub account linking failed",linkError);
+     $("status").textContent=`● OWNER ACCOUNT LINK FAILED · ${linkError.code||linkError.message||"ERROR"}`;
+     $("status").className="status err";
+    }
+   }else{
+    $("status").textContent="● GITHUB LOGIN CONFLICT · GITHUB CREDENTIAL WAS NOT RETURNED";
     $("status").className="status err";
    }
   }else{
