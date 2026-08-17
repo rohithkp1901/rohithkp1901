@@ -29,7 +29,7 @@ button:disabled{opacity:.55;cursor:wait}
 </main>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import{getAuth,signInWithPopup,onAuthStateChanged,GithubAuthProvider,setPersistence,browserLocalPersistence,signOut}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{getAuth,signInWithPopup,onAuthStateChanged,GithubAuthProvider,setPersistence,browserLocalPersistence,signOut,signInWithEmailAndPassword,linkWithCredential}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import{getDatabase,ref,set,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 const config={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
@@ -38,6 +38,7 @@ const OWNER_GITHUB="rohithkp1901";
 const app=initializeApp(config),auth=getAuth(app),db=getDatabase(app);
 const $=id=>document.getElementById(id);
 let gpsStarted=false,authBusy=false;
+let pendingGithubCredential=null;
 
 setPersistence(auth,browserLocalPersistence).catch(console.warn);
 
@@ -147,6 +148,28 @@ async function acceptOwner(user,result){
  return true;
 }
 
+async function linkPendingGithub(){
+ if(!pendingGithubCredential)return;
+ const password=prompt(`Enter the Firebase password for ${OWNER_EMAIL} to connect your GitHub account:`);
+ if(password===null){
+  pendingGithubCredential=null;
+  return;
+ }
+ if(!password){
+  throw new Error("Firebase owner password is required to link GitHub");
+ }
+ $("status").textContent="● SIGNING IN TO EXISTING OWNER ACCOUNT…";
+ $("status").className="status info";
+ const existing=await signInWithEmailAndPassword(auth,OWNER_EMAIL,password);
+ try{
+  await linkWithCredential(existing.user,pendingGithubCredential);
+ }catch(e){
+  if(e.code!=="auth/provider-already-linked")throw e;
+ }
+ pendingGithubCredential=null;
+ await acceptOwner(existing.user);
+}
+
 async function loginWithGitHub(){
  if(authBusy)return;
  authBusy=true;
@@ -161,10 +184,21 @@ async function loginWithGitHub(){
   await acceptOwner(result.user,result);
  }catch(e){
   console.error("GitHub popup sign-in failed",e);
-  $("status").textContent=`● GITHUB LOGIN FAILED · ${e.code||"AUTH ERROR"}`;
-  $("status").className="status err";
+  if(e.code==="auth/account-exists-with-different-credential"&&e.credential){
+   pendingGithubCredential=e.credential;
+   try{
+    await linkPendingGithub();
+   }catch(linkError){
+    console.error("GitHub account linking failed",linkError);
+    $("status").textContent=`● OWNER ACCOUNT LINK FAILED · ${linkError.code||linkError.message||"ERROR"}`;
+    $("status").className="status err";
+   }
+  }else{
+   $("status").textContent=`● GITHUB LOGIN FAILED · ${e.code||"AUTH ERROR"}`;
+   $("status").className="status err";
+  }
   $("login").disabled=false;
-  $("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
+  if(!gpsStarted)$("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
  }finally{
   authBusy=false;
  }
@@ -174,7 +208,7 @@ $("login").onclick=loginWithGitHub;
 
 onAuthStateChanged(auth,async user=>{
  if(!user||authBusy||gpsStarted)return;
- await acceptOwner(user);
+ try{await acceptOwner(user);}catch(e){console.error(e)}
 });
 </script>
 </body>
