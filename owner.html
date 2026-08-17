@@ -13,6 +13,11 @@ button:disabled{opacity:.55;cursor:wait}
 .status{margin-top:18px;font-size:11px;line-height:1.8}.ok{color:#00ff41}.err{color:#ff7070}.info{color:#e7c95a}
 .location{margin-top:20px;padding:16px;border:1px solid #183523;border-radius:8px;background:#05080b;display:none}
 .location strong{display:block;color:#00ff41;margin-bottom:8px;font-size:11px;letter-spacing:2px}.place{font-size:18px;font-weight:bold;color:#e8fff0}.accuracy{margin-top:8px;color:#8da998;font-size:10px}
+#passwordBox{display:none;margin-top:18px;padding:16px;border:1px solid #183523;border-radius:8px;background:#05080b}
+#passwordBox label{display:block;color:#8da998;font-size:10px;line-height:1.6;margin-bottom:7px}
+#passwordBox input{box-sizing:border-box;width:100%;padding:12px;background:#07100a;border:1px solid #00ff41;color:#e8fff0;font:inherit;outline:none;border-radius:5px}
+#passwordBox button{margin-top:10px}
+#cancelPassword{background:#183523;color:#8da998}
 </style>
 </head>
 <body>
@@ -20,6 +25,12 @@ button:disabled{opacity:.55;cursor:wait}
 <h1>◉ OWNER GPS CONTROL</h1>
 <p>Sign in with the owner GitHub account. After GitHub authentication, the browser automatically starts the owner's live GPS and shares it with visitors. No separate Firebase password is required.</p>
 <button id="login">LOGIN WITH GITHUB & START LIVE GPS</button>
+<div id="passwordBox">
+<label>GitHub is being connected to your existing Firebase owner account.<br>Enter the Firebase password for <strong>rohithkp1901@gmail.com</strong>.</label>
+<input id="ownerPassword" type="password" autocomplete="current-password" placeholder="Firebase password">
+<button id="connectPassword">CONNECT GITHUB & CONTINUE</button>
+<button id="cancelPassword" type="button">CANCEL</button>
+</div>
 <div id="status" class="status info">● CHECKING OWNER SESSION…</div>
 <div id="location" class="location">
 <strong>👤 OWNER LOCATION · LIVE</strong>
@@ -37,19 +48,13 @@ const OWNER_EMAIL="rohithkp1901@gmail.com";
 const OWNER_GITHUB="rohithkp1901";
 const app=initializeApp(config),auth=getAuth(app),db=getDatabase(app);
 const $=id=>document.getElementById(id);
-let gpsStarted=false,authBusy=false;
-let pendingGithubCredential=null;
+let gpsStarted=false,authBusy=false,pendingGithubCredential=null;
 
 setPersistence(auth,browserLocalPersistence).catch(console.warn);
 
 function clean(parts){
  const out=[];
- for(const v of parts){
-  if(v&&typeof v==="string"){
-   const s=v.trim();
-   if(s&&!out.some(x=>x.toLowerCase()===s.toLowerCase()))out.push(s);
-  }
- }
+ for(const v of parts){if(v&&typeof v==="string"){const s=v.trim();if(s&&!out.some(x=>x.toLowerCase()===s.toLowerCase()))out.push(s)}}
  return out.join(", ");
 }
 
@@ -73,8 +78,7 @@ async function reverse(lat,lon){
  const nom=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
  const bdc=`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
  try{
-  const results=await Promise.allSettled([fetch(nom),fetch(bdc)]);
-  let n=null,b=null;
+  const results=await Promise.allSettled([fetch(nom),fetch(bdc)]);let n=null,b=null;
   if(results[0].status==="fulfilled"&&results[0].value.ok)n=await results[0].value.json();
   if(results[1].status==="fulfilled"&&results[1].value.ok)b=await results[1].value.json();
   return formatLocation(n,b);
@@ -84,134 +88,67 @@ async function reverse(lat,lon){
 function startOwnerGPS(){
  if(gpsStarted)return;
  if(!navigator.geolocation){$("status").textContent="● GPS NOT SUPPORTED";$("status").className="status err";return}
- gpsStarted=true;
- $("login").disabled=true;
- $("login").textContent="GPS ACTIVE · KEEP THIS PAGE OPEN";
- $("status").textContent="● REQUESTING OWNER LOCATION PERMISSION…";
- $("status").className="status info";
- $("location").style.display="block";
+ gpsStarted=true;$("login").disabled=true;$("login").textContent="GPS ACTIVE · KEEP THIS PAGE OPEN";
+ $("passwordBox").style.display="none";$("status").textContent="● REQUESTING OWNER LOCATION PERMISSION…";$("status").className="status info";$("location").style.display="block";
  navigator.geolocation.watchPosition(async p=>{
-  const{latitude,longitude,accuracy}=p.coords;
-  const place=await reverse(latitude,longitude);
-  try{
-   const r=ref(db,"owner");
-   await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp(),ownerGithub:OWNER_GITHUB});
-   await onDisconnect(r).update({online:false});
-   $("place").textContent="📍 "+place;
-   $("accuracy").textContent=`GPS accuracy ±${Math.round(accuracy||0)} m · Live location shared with visitors`;
-   $("status").textContent="● OWNER GPS LIVE · LOCATION SHARED";
-   $("status").className="status ok";
-  }catch(e){
-   console.error("Firebase owner publish failed",e);
-   $("status").textContent="● LOCATION SHARE FAILED · "+(e.code||"FIREBASE ERROR");
-   $("status").className="status err";
-  }
- },e=>{
-  console.error("Owner GPS error",e);
-  const msg=e.code===1?"LOCATION PERMISSION REQUIRED":e.code===2?"LOCATION UNAVAILABLE":e.code===3?"LOCATION TIMEOUT":"GPS ERROR";
-  $("status").textContent="● "+msg;
-  $("status").className="status err";
-  $("login").disabled=false;
-  $("login").textContent="TRY GPS AGAIN";
-  gpsStarted=false;
- },{enableHighAccuracy:true,maximumAge:0,timeout:30000});
+  const{latitude,longitude,accuracy}=p.coords;const place=await reverse(latitude,longitude);
+  try{const r=ref(db,"owner");await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp(),ownerGithub:OWNER_GITHUB});await onDisconnect(r).update({online:false});
+   $("place").textContent="📍 "+place;$("accuracy").textContent=`GPS accuracy ±${Math.round(accuracy||0)} m · Live location shared with visitors`;
+   $("status").textContent="● OWNER GPS LIVE · LOCATION SHARED";$("status").className="status ok";
+  }catch(e){console.error("Firebase owner publish failed",e);$("status").textContent="● LOCATION SHARE FAILED · "+(e.code||"FIREBASE ERROR");$("status").className="status err"}
+ },e=>{console.error("Owner GPS error",e);const msg=e.code===1?"LOCATION PERMISSION REQUIRED":e.code===2?"LOCATION UNAVAILABLE":e.code===3?"LOCATION TIMEOUT":"GPS ERROR";$("status").textContent="● "+msg;$("status").className="status err";$("login").disabled=false;$("login").textContent="TRY GPS AGAIN";gpsStarted=false},{enableHighAccuracy:true,maximumAge:0,timeout:30000});
 }
 
 function githubIdentity(user,result){
- const provider=user?.providerData?.find(p=>p.providerId==="github.com")||{};
- const profile=result?.additionalUserInfo?.profile||{};
- return{
-  username:String(profile.login||provider.displayName||"").trim().toLowerCase(),
-  email:String(user?.email||provider.email||profile.email||"").trim().toLowerCase()
- };
+ const provider=user?.providerData?.find(p=>p.providerId==="github.com")||{};const profile=result?.additionalUserInfo?.profile||{};
+ return{username:String(profile.login||provider.displayName||"").trim().toLowerCase(),email:String(user?.email||provider.email||profile.email||"").trim().toLowerCase()};
 }
-
-function isOwner(user,result){
- const id=githubIdentity(user,result);
- return id.username===OWNER_GITHUB.toLowerCase()||id.email===OWNER_EMAIL.toLowerCase();
-}
-
+function isOwner(user,result){const id=githubIdentity(user,result);return id.username===OWNER_GITHUB.toLowerCase()||id.email===OWNER_EMAIL.toLowerCase()}
 async function acceptOwner(user,result){
- if(!user)return false;
- const id=githubIdentity(user,result);
- console.log("GitHub identity:",id);
- if(!isOwner(user,result)){
-  $("status").textContent=`● GITHUB ACCOUNT NOT AUTHORIZED · @${id.username||"UNKNOWN"}`;
-  $("status").className="status err";
-  await signOut(auth).catch(()=>{});
-  return false;
- }
- localStorage.setItem("rohith-owner-location","true");
- $("status").textContent=`● OWNER GITHUB @${id.username||OWNER_GITHUB} VERIFIED · STARTING GPS…`;
- $("status").className="status ok";
- startOwnerGPS();
- return true;
+ if(!user)return false;const id=githubIdentity(user,result);console.log("GitHub identity:",id);
+ if(!isOwner(user,result)){ $("status").textContent=`● GITHUB ACCOUNT NOT AUTHORIZED · @${id.username||"UNKNOWN"}`;$("status").className="status err";await signOut(auth).catch(()=>{});return false }
+ localStorage.setItem("rohith-owner-location","true");$("status").textContent=`● OWNER GITHUB @${id.username||OWNER_GITHUB} VERIFIED · STARTING GPS…`;$("status").className="status ok";startOwnerGPS();return true;
 }
 
-async function linkPendingGithub(){
- if(!pendingGithubCredential)throw new Error("GitHub credential was not captured");
- const password=prompt(`Enter the Firebase password for ${OWNER_EMAIL} to connect your GitHub account:`);
- if(password===null){pendingGithubCredential=null;throw new Error("OWNER_PASSWORD_CANCELLED")}
- if(!password.trim())throw new Error("OWNER_PASSWORD_REQUIRED");
- $("status").textContent="● SIGNING IN TO EXISTING OWNER ACCOUNT…";
- $("status").className="status info";
- const existing=await signInWithEmailAndPassword(auth,OWNER_EMAIL,password);
+function showPasswordForm(){
+ $("passwordBox").style.display="block";$("ownerPassword").value="";$("ownerPassword").focus();$("status").textContent="● EXISTING OWNER ACCOUNT FOUND · ENTER FIREBASE PASSWORD";$("status").className="status info";$("login").disabled=true;
+}
+function hidePasswordForm(){
+ $("passwordBox").style.display="none";$("ownerPassword").value="";pendingGithubCredential=null;$("login").disabled=false;$("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
+}
+async function connectExistingOwner(){
+ if(!pendingGithubCredential)return;
+ const password=$("ownerPassword").value;
+ if(!password){$("status").textContent="● ENTER YOUR FIREBASE PASSWORD";$("status").className="status err";$("ownerPassword").focus();return}
+ $("connectPassword").disabled=true;$("cancelPassword").disabled=true;$("status").textContent="● SIGNING IN TO EXISTING OWNER ACCOUNT…";$("status").className="status info";
  try{
-  await linkWithCredential(existing.user,pendingGithubCredential);
+  const existing=await signInWithEmailAndPassword(auth,OWNER_EMAIL,password);
+  try{await linkWithCredential(existing.user,pendingGithubCredential)}catch(e){if(e.code!=="auth/provider-already-linked"&&e.code!=="auth/credential-already-in-use")throw e}
+  const linked=auth.currentUser||existing.user;pendingGithubCredential=null;$("passwordBox").style.display="none";$("ownerPassword").value="";await acceptOwner(linked);
  }catch(e){
-  if(e.code!=="auth/provider-already-linked")throw e;
- }
- const linked=auth.currentUser||existing.user;
- pendingGithubCredential=null;
- await acceptOwner(linked);
+  console.error("Owner account linking failed",e);
+  const msg=e.code==="auth/wrong-password"?"WRONG FIREBASE PASSWORD":e.code==="auth/invalid-credential"?"INVALID FIREBASE PASSWORD":e.code==="auth/too-many-requests"?"TOO MANY ATTEMPTS · TRY AGAIN LATER":e.code||e.message||"ERROR";
+  $("status").textContent="● OWNER ACCOUNT LINK FAILED · "+msg;$("status").className="status err";
+  $("connectPassword").disabled=false;$("cancelPassword").disabled=false;
+ } 
 }
-
 async function loginWithGitHub(){
- if(authBusy)return;
- authBusy=true;
- $("login").disabled=true;
- $("login").textContent="OPENING GITHUB LOGIN…";
- $("status").textContent="● GITHUB AUTHENTICATION…";
- $("status").className="status info";
- try{
-  const provider=new GithubAuthProvider();
-  provider.setCustomParameters({allow_signup:"false"});
-  const result=await signInWithPopup(auth,provider);
-  await acceptOwner(result.user,result);
- }catch(e){
+ if(authBusy)return;authBusy=true;$("login").disabled=true;$("login").textContent="OPENING GITHUB LOGIN…";$("status").textContent="● GITHUB AUTHENTICATION…";$("status").className="status info";
+ try{const provider=new GithubAuthProvider();provider.setCustomParameters({allow_signup:"false"});const result=await signInWithPopup(auth,provider);await acceptOwner(result.user,result)}
+ catch(e){
   console.error("GitHub popup sign-in failed",e);
   if(e.code==="auth/account-exists-with-different-credential"){
    pendingGithubCredential=e.credential||GithubAuthProvider.credentialFromError(e);
-   if(pendingGithubCredential){
-    try{
-     await linkPendingGithub();
-     return;
-    }catch(linkError){
-     console.error("GitHub account linking failed",linkError);
-     $("status").textContent=`● OWNER ACCOUNT LINK FAILED · ${linkError.code||linkError.message||"ERROR"}`;
-     $("status").className="status err";
-    }
-   }else{
-    $("status").textContent="● GITHUB LOGIN CONFLICT · GITHUB CREDENTIAL WAS NOT RETURNED";
-    $("status").className="status err";
-   }
-  }else{
-   $("status").textContent=`● GITHUB LOGIN FAILED · ${e.code||"AUTH ERROR"}`;
-   $("status").className="status err";
-  }
-  $("login").disabled=false;
-  if(!gpsStarted)$("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
- }finally{
-  authBusy=false;
- }
+   if(pendingGithubCredential){showPasswordForm();authBusy=false;return}
+   $("status").textContent="● GITHUB LOGIN CONFLICT · GITHUB CREDENTIAL WAS NOT RETURNED";$("status").className="status err";
+  }else{$("status").textContent=`● GITHUB LOGIN FAILED · ${e.code||"AUTH ERROR"}`;$("status").className="status err"}
+  $("login").disabled=false;if(!gpsStarted)$("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
+ }finally{authBusy=false}
 }
 
-$("login").onclick=loginWithGitHub;
-
-onAuthStateChanged(auth,async user=>{
- if(!user||authBusy||gpsStarted)return;
- try{await acceptOwner(user);}catch(e){console.error(e)}
-});
+$("login").onclick=loginWithGitHub;$("connectPassword").onclick=connectExistingOwner;$("cancelPassword").onclick=hidePasswordForm;
+$("ownerPassword").addEventListener("keydown",e=>{if(e.key==="Enter")connectExistingOwner()});
+onAuthStateChanged(auth,async user=>{if(!user||authBusy||gpsStarted)return;try{await acceptOwner(user)}catch(e){console.error(e)}});
 </script>
 </body>
 </html>
