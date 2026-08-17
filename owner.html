@@ -8,7 +8,6 @@
 body{margin:0;min-height:100vh;background:#05080b;color:#00ff41;font-family:"Courier New",monospace;display:grid;place-items:center;padding:20px}
 main{width:min(520px,94vw);border:1px solid #00ff41;padding:30px;border-radius:10px;box-shadow:0 0 30px #003b13;background:#07100a}
 h1{font-size:18px;letter-spacing:3px}p{color:#8da998;font-size:12px;line-height:1.7}
-input{width:100%;box-sizing:border-box;margin:7px 0;padding:12px;background:#05080b;border:1px solid #31523b;color:#fff;font:inherit}
 button{padding:12px 18px;margin-top:8px;background:#00ff41;color:#041006;border:0;font:inherit;font-weight:bold;cursor:pointer;width:100%}
 button:disabled{opacity:.55;cursor:wait}
 .status{margin-top:18px;font-size:11px;line-height:1.8}.ok{color:#00ff41}.err{color:#ff7070}.info{color:#e7c95a}
@@ -19,11 +18,9 @@ button:disabled{opacity:.55;cursor:wait}
 <body>
 <main>
 <h1>◉ OWNER GPS CONTROL</h1>
-<p>Open this page on the owner's phone. The first time, authenticate once and allow location access. After that, the browser remembers the owner session, so opening this page again starts the owner's live GPS automatically.</p>
-<input id="email" type="email" value="rohithkp1901@gmail.com" autocomplete="username">
-<input id="password" type="password" placeholder="Firebase password" autocomplete="current-password">
-<button id="login">AUTHENTICATE & START LIVE GPS</button>
-<div id="status" class="status info">● OWNER SESSION REQUIRED</div>
+<p>Sign in with the owner GitHub account. After GitHub authentication, the browser automatically starts the owner's live GPS and shares it with visitors. No separate Firebase password is required.</p>
+<button id="login">LOGIN WITH GITHUB & START LIVE GPS</button>
+<div id="status" class="status info">● CHECKING OWNER SESSION…</div>
 <div id="location" class="location">
 <strong>👤 OWNER LOCATION · LIVE</strong>
 <div id="place" class="place">Locating…</div>
@@ -32,7 +29,7 @@ button:disabled{opacity:.55;cursor:wait}
 </main>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,setPersistence,browserLocalPersistence}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{getAuth,signInWithRedirect,getRedirectResult,onAuthStateChanged,GithubAuthProvider,setPersistence,browserLocalPersistence,signOut}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import{getDatabase,ref,set,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 const config={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
@@ -43,38 +40,70 @@ let gpsStarted=false;
 
 setPersistence(auth,browserLocalPersistence).catch(()=>{});
 
-function clean(parts){const out=[];for(const v of parts){if(v&&typeof v==="string"&&!out.some(x=>x.toLowerCase()===v.trim().toLowerCase()))out.push(v.trim())}return out.join(", ")}
-function formatNominatim(a){return clean([a.county||a.city_district||a.municipality||a.city||a.town||a.village||a.locality||a.suburb,a.state_district||a.district||a.region,a.state,a.country])}
-function formatBigData(d){return clean([d.city||d.locality,d.principalSubdivision,d.countryName])}
+function clean(parts){
+ const out=[];
+ for(const v of parts){
+  if(v&&typeof v==="string"){
+   const s=v.trim();
+   if(s&&!out.some(x=>x.toLowerCase()===s.toLowerCase()))out.push(s);
+  }
+ }
+ return out.join(", ");
+}
+
+function district(address,big){
+ const state=String(address.state||big?.principalSubdivision||"").trim().toLowerCase();
+ const locality=String(address.city_district||address.county||address.municipality||address.locality||address.suburb||big?.locality||"").trim();
+ const city=String(address.city||address.town||address.village||big?.city||"").trim();
+ if(state==="kerala"&&(locality.toLowerCase()==="kanayannur"||city.toLowerCase()==="kanayannur"))return "Ernakulam";
+ return address.state_district||address.district||big?.district||big?.localityInfo?.administrative?.find(x=>+x.adminLevel===6)?.name||"";
+}
+
+function formatLocation(nom,big){
+ const a=nom?.address||{};
+ const locality=a.city_district||a.county||a.municipality||a.locality||a.suburb||big?.locality||"";
+ const city=a.city||a.town||a.village||big?.city||"";
+ const dist=district(a,big);
+ return clean([locality,city,dist,a.state||big?.principalSubdivision,a.country||big?.countryName])||"Location name unavailable";
+}
 
 async function reverse(lat,lon){
  const nom=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
  const bdc=`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
  try{
   const results=await Promise.allSettled([fetch(nom),fetch(bdc)]);
-  let a="",b="";
-  if(results[0].status==="fulfilled"&&results[0].value.ok){const d=await results[0].value.json();a=formatNominatim(d.address||{})}
-  if(results[1].status==="fulfilled"&&results[1].value.ok){const d=await results[1].value.json();b=formatBigData(d)}
-  return a||b||"Location name unavailable";
+  let n=null,b=null;
+  if(results[0].status==="fulfilled"&&results[0].value.ok)n=await results[0].value.json();
+  if(results[1].status==="fulfilled"&&results[1].value.ok)b=await results[1].value.json();
+  return formatLocation(n,b);
  }catch{return"Location name unavailable"}
 }
 
 function startOwnerGPS(){
  if(gpsStarted)return;
  gpsStarted=true;
- if(!navigator.geolocation){$("status").textContent="● GPS NOT SUPPORTED";$("status").className="status err";return}
+
+ if(!navigator.geolocation){
+  $("status").textContent="● GPS NOT SUPPORTED";
+  $("status").className="status err";
+  return;
+ }
+
  $("login").disabled=true;
  $("login").textContent="GPS ACTIVE · KEEP THIS PAGE OPEN";
  $("status").textContent="● REQUESTING OWNER LOCATION PERMISSION…";
  $("status").className="status info";
  $("location").style.display="block";
+
  navigator.geolocation.watchPosition(async p=>{
   const{latitude,longitude,accuracy}=p.coords;
   const place=await reverse(latitude,longitude);
+
   try{
    const r=ref(db,"owner");
    await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp()});
    await onDisconnect(r).update({online:false});
+
    $("place").textContent="📍 "+place;
    $("accuracy").textContent=`GPS accuracy ±${Math.round(accuracy)} m · Live location shared with visitors`;
    $("status").textContent="● OWNER GPS LIVE · LOCATION SHARED";
@@ -85,6 +114,7 @@ function startOwnerGPS(){
    $("status").className="status err";
   }
  },e=>{
+  console.error(e);
   const msg=e.code===1?"LOCATION PERMISSION REQUIRED":e.code===2?"LOCATION UNAVAILABLE":e.code===3?"LOCATION TIMEOUT":"GPS ERROR";
   $("status").textContent="● "+msg;
   $("status").className="status err";
@@ -94,22 +124,55 @@ function startOwnerGPS(){
  },{enableHighAccuracy:true,maximumAge:0,timeout:30000});
 }
 
-onAuthStateChanged(auth,u=>{
- if(u&&u.email===OWNER){
-  localStorage.setItem("rohith-owner-location","true");
-  $("status").textContent="● OWNER AUTHENTICATED · STARTING GPS…";
-  $("status").className="status ok";
-  startOwnerGPS();
+async function loginWithGitHub(){
+ $("login").disabled=true;
+ $("login").textContent="REDIRECTING TO GITHUB…";
+ $("status").textContent="● OPENING GITHUB LOGIN…";
+ $("status").className="status info";
+
+ try{
+  const provider=new GithubAuthProvider();
+  provider.setCustomParameters({allow_signup:"true"});
+  await signInWithRedirect(auth,provider);
+ }catch(e){
+  console.error(e);
+  $("status").textContent="● GITHUB LOGIN FAILED · "+e.code;
+  $("status").className="status err";
+  $("login").disabled=false;
+  $("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
+ }
+}
+
+$("login").onclick=loginWithGitHub;
+
+getRedirectResult(auth).catch(e=>{
+ console.error("GitHub redirect result:",e);
+ if(e.code){
+  $("status").textContent="● GITHUB LOGIN FAILED · "+e.code;
+  $("status").className="status err";
+  $("login").disabled=false;
+  $("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
  }
 });
 
-$("login").onclick=async()=>{
- const email=$("email").value.trim().toLowerCase(),password=$("password").value;
- if(email!==OWNER){$("status").textContent="● OWNER EMAIL REQUIRED";$("status").className="status err";return}
- if(!password){$("status").textContent="● ENTER FIREBASE PASSWORD";$("status").className="status err";return}
- $("login").disabled=true;$("login").textContent="AUTHENTICATING…";
- try{await signInWithEmailAndPassword(auth,email,password)}catch(e){$("status").textContent="● LOGIN FAILED · "+e.code;$("status").className="status err";$("login").disabled=false;$("login").textContent="AUTHENTICATE & START LIVE GPS"}
-};
+onAuthStateChanged(auth,u=>{
+ if(!u)return;
+
+ const email=(u.email||"").toLowerCase();
+ if(email!==OWNER){
+  $("status").textContent="● GITHUB ACCOUNT IS NOT THE OWNER ACCOUNT";
+  $("status").className="status err";
+  $("login").disabled=false;
+  $("login").textContent="LOGIN WITH THE OWNER GITHUB ACCOUNT";
+  signOut(auth).catch(()=>{});
+  return;
+ }
+
+ localStorage.setItem("rohith-owner-location","true");
+ $("status").textContent="● OWNER GITHUB ACCOUNT VERIFIED · STARTING GPS…";
+ $("status").className="status ok";
+ startOwnerGPS();
+});
 </script>
 </body>
 </html>
