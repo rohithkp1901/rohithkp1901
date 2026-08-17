@@ -29,16 +29,17 @@ button:disabled{opacity:.55;cursor:wait}
 </main>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import{getAuth,signInWithRedirect,getRedirectResult,onAuthStateChanged,GithubAuthProvider,setPersistence,browserLocalPersistence,signOut}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{getAuth,signInWithPopup,onAuthStateChanged,GithubAuthProvider,setPersistence,browserLocalPersistence,signOut}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import{getDatabase,ref,set,onDisconnect,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 const config={apiKey:"AIzaSyAOaCQ9boh4bB_mZ6anGApiZ6HpmGBdb8E",authDomain:"live-location-fdc03.firebaseapp.com",databaseURL:"https://live-location-fdc03-default-rtdb.firebaseio.com/",projectId:"live-location-fdc03",storageBucket:"live-location-fdc03.firebasestorage.app",messagingSenderId:"60312713615",appId:"1:60312713615:web:8508e5794fed95b61bf3fa",measurementId:"G-42RP9TQZYJ"};
-const OWNER="rohithkp1901@gmail.com";
+const OWNER_EMAIL="rohithkp1901@gmail.com";
+const OWNER_GITHUB="rohithkp1901";
 const app=initializeApp(config),auth=getAuth(app),db=getDatabase(app);
 const $=id=>document.getElementById(id);
-let gpsStarted=false;
+let gpsStarted=false,authBusy=false;
 
-setPersistence(auth,browserLocalPersistence).catch(()=>{});
+setPersistence(auth,browserLocalPersistence).catch(console.warn);
 
 function clean(parts){
  const out=[];
@@ -81,40 +82,31 @@ async function reverse(lat,lon){
 
 function startOwnerGPS(){
  if(gpsStarted)return;
+ if(!navigator.geolocation){$("status").textContent="● GPS NOT SUPPORTED";$("status").className="status err";return}
  gpsStarted=true;
-
- if(!navigator.geolocation){
-  $("status").textContent="● GPS NOT SUPPORTED";
-  $("status").className="status err";
-  return;
- }
-
  $("login").disabled=true;
  $("login").textContent="GPS ACTIVE · KEEP THIS PAGE OPEN";
  $("status").textContent="● REQUESTING OWNER LOCATION PERMISSION…";
  $("status").className="status info";
  $("location").style.display="block";
-
  navigator.geolocation.watchPosition(async p=>{
   const{latitude,longitude,accuracy}=p.coords;
   const place=await reverse(latitude,longitude);
-
   try{
    const r=ref(db,"owner");
-   await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp()});
+   await set(r,{latitude,longitude,accuracy,place,online:true,updatedAt:serverTimestamp(),ownerGithub:OWNER_GITHUB});
    await onDisconnect(r).update({online:false});
-
    $("place").textContent="📍 "+place;
-   $("accuracy").textContent=`GPS accuracy ±${Math.round(accuracy)} m · Live location shared with visitors`;
+   $("accuracy").textContent=`GPS accuracy ±${Math.round(accuracy||0)} m · Live location shared with visitors`;
    $("status").textContent="● OWNER GPS LIVE · LOCATION SHARED";
    $("status").className="status ok";
   }catch(e){
-   console.error(e);
-   $("status").textContent="● LOCATION SHARE FAILED";
+   console.error("Firebase owner publish failed",e);
+   $("status").textContent="● LOCATION SHARE FAILED · "+(e.code||"FIREBASE ERROR");
    $("status").className="status err";
   }
  },e=>{
-  console.error(e);
+  console.error("Owner GPS error",e);
   const msg=e.code===1?"LOCATION PERMISSION REQUIRED":e.code===2?"LOCATION UNAVAILABLE":e.code===3?"LOCATION TIMEOUT":"GPS ERROR";
   $("status").textContent="● "+msg;
   $("status").className="status err";
@@ -124,54 +116,65 @@ function startOwnerGPS(){
  },{enableHighAccuracy:true,maximumAge:0,timeout:30000});
 }
 
-async function loginWithGitHub(){
- $("login").disabled=true;
- $("login").textContent="REDIRECTING TO GITHUB…";
- $("status").textContent="● OPENING GITHUB LOGIN…";
- $("status").className="status info";
+function githubIdentity(user,result){
+ const provider=user?.providerData?.find(p=>p.providerId==="github.com")||{};
+ const profile=result?.additionalUserInfo?.profile||{};
+ return{
+  username:String(profile.login||provider.displayName||"").trim().toLowerCase(),
+  email:String(user?.email||provider.email||profile.email||"").trim().toLowerCase()
+ };
+}
 
+function isOwner(user,result){
+ const id=githubIdentity(user,result);
+ return id.username===OWNER_GITHUB.toLowerCase()||id.email===OWNER_EMAIL.toLowerCase();
+}
+
+async function acceptOwner(user,result){
+ if(!user)return false;
+ const id=githubIdentity(user,result);
+ console.log("GitHub identity:",id);
+ if(!isOwner(user,result)){
+  $("status").textContent=`● GITHUB ACCOUNT NOT AUTHORIZED · @${id.username||"UNKNOWN"}`;
+  $("status").className="status err";
+  await signOut(auth).catch(()=>{});
+  return false;
+ }
+ localStorage.setItem("rohith-owner-location","true");
+ $("status").textContent=`● OWNER GITHUB @${id.username||OWNER_GITHUB} VERIFIED · STARTING GPS…`;
+ $("status").className="status ok";
+ startOwnerGPS();
+ return true;
+}
+
+async function loginWithGitHub(){
+ if(authBusy)return;
+ authBusy=true;
+ $("login").disabled=true;
+ $("login").textContent="OPENING GITHUB LOGIN…";
+ $("status").textContent="● GITHUB AUTHENTICATION…";
+ $("status").className="status info";
  try{
   const provider=new GithubAuthProvider();
-  provider.setCustomParameters({allow_signup:"true"});
-  await signInWithRedirect(auth,provider);
+  provider.setCustomParameters({allow_signup:"false"});
+  const result=await signInWithPopup(auth,provider);
+  await acceptOwner(result.user,result);
  }catch(e){
-  console.error(e);
-  $("status").textContent="● GITHUB LOGIN FAILED · "+e.code;
+  console.error("GitHub popup sign-in failed",e);
+  $("status").textContent=`● GITHUB LOGIN FAILED · ${e.code||"AUTH ERROR"}`;
   $("status").className="status err";
   $("login").disabled=false;
   $("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
+ }finally{
+  authBusy=false;
  }
 }
 
 $("login").onclick=loginWithGitHub;
 
-getRedirectResult(auth).catch(e=>{
- console.error("GitHub redirect result:",e);
- if(e.code){
-  $("status").textContent="● GITHUB LOGIN FAILED · "+e.code;
-  $("status").className="status err";
-  $("login").disabled=false;
-  $("login").textContent="LOGIN WITH GITHUB & START LIVE GPS";
- }
-});
-
-onAuthStateChanged(auth,u=>{
- if(!u)return;
-
- const email=(u.email||"").toLowerCase();
- if(email!==OWNER){
-  $("status").textContent="● GITHUB ACCOUNT IS NOT THE OWNER ACCOUNT";
-  $("status").className="status err";
-  $("login").disabled=false;
-  $("login").textContent="LOGIN WITH THE OWNER GITHUB ACCOUNT";
-  signOut(auth).catch(()=>{});
-  return;
- }
-
- localStorage.setItem("rohith-owner-location","true");
- $("status").textContent="● OWNER GITHUB ACCOUNT VERIFIED · STARTING GPS…";
- $("status").className="status ok";
- startOwnerGPS();
+onAuthStateChanged(auth,async user=>{
+ if(!user||authBusy||gpsStarted)return;
+ await acceptOwner(user);
 });
 </script>
 </body>
