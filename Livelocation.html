@@ -50,7 +50,11 @@ function startOwnerGPS(){
    const r=ref(db,"owner");
    await set(r,{latitude,longitude,accuracy,place,online:true,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC",updatedAt:serverTimestamp()});
    onDisconnect(r).update({online:false}).catch(console.error);
-  }catch(e){console.error("Owner location share failed:",e)}
+  }catch(e){
+   console.error("Owner location share failed:",e);
+   // Keep the owner's local GPS display alive even if Firebase write access is unavailable.
+   $("my-meta").textContent=`● LIVE · GPS ONLY · ACCURACY ±${Math.round(accuracy||0)} m`;
+  }
  },e=>{
   console.error("Owner GPS error:",e);
   ownerGpsStarted=false;
@@ -87,7 +91,9 @@ async function authenticateOwnerAutomatically(){
 }
 
 function startOwnerListener(){
- if(ownerListenerStarted)return;
+ // The owner already has the authoritative local GPS stream above.
+ // Do not let a Firebase read-permission error overwrite the owner's own live display.
+ if(ownerListenerStarted||ownerMode)return;
  ownerListenerStarted=true;
  onValue(ref(db,"owner"),async snap=>{
   const d=snap.val();
@@ -102,8 +108,11 @@ function startOwnerListener(){
   tick();
  },error=>{
   console.error("Owner location read failed:",error);
-  $("my-pin").textContent="OWNER LOCATION UNAVAILABLE";
-  $("my-meta").textContent="LIVE LOCATION ACCESS DENIED";
+  // Visitors will see the Firebase error state. The owner must keep seeing local GPS.
+  if(!auth.currentUser||auth.currentUser.email?.toLowerCase()!==OWNER.toLowerCase()){
+   $("my-pin").textContent="OWNER LOCATION UNAVAILABLE";
+   $("my-meta").textContent="LIVE LOCATION ACCESS DENIED";
+  }
  });
 }
 
@@ -111,7 +120,7 @@ onAuthStateChanged(auth,user=>{
  if(user?.email?.toLowerCase()===OWNER.toLowerCase()){
   localStorage.setItem("ownerLocationAuth","true");
   startOwnerGPS();
-  startOwnerListener();
+  // Owner does not need a Firebase read listener for the local display.
  }else if(!ownerMode&&user){
   startOwnerListener();
  }else if(ownerMode&&!user){
