@@ -8,7 +8,7 @@
 </sub>
 <br><br>
 
-<img src="./assets/rohith-name.svg" width="720" alt="Rohith K P" />
+<img src="./assets/rohith-name.svg" width="720" alt="R0H1TH K P" />
 
 ```text
 [ SYSTEM ONLINE ]  [ DEVELOPER MODE ]  [ FULL STACK ]
