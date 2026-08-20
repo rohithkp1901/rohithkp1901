@@ -18,7 +18,7 @@
 
 ---
 
-# `01` — SYSTEM PROFILE
+<div align="center"><img src="./assets/hud-section-01-system-profile.svg?v=20260820-1" width="950" alt="01 — SYSTEM PROFILE" /></div>
 <div align="center">
 <img src="./assets/system-profile.svg" width="900" alt="Animated system profile" />
 
@@ -32,16 +32,14 @@
 
 ---
 
-# `02` — TECHNICAL STACK
-
+<div align="center"><img src="./assets/hud-section-02-technical-stack.svg?v=20260820-1" width="950" alt="02 — TECHNICAL STACK" /></div>
 <div align="center">
 <img src="./assets/technical-stack.svg" width="950" alt="Animated technical stack" />
 </div>
 
 ---
 
-# `03` — CURRENT PROJECT
-
+<div align="center"><img src="./assets/hud-section-03-current-project.svg?v=20260820-1" width="950" alt="03 — CURRENT PROJECT" /></div>
 <div align="center">
 <img src="./assets/current-project.svg" width="950" alt="Animated current project" />
 </div>
@@ -50,24 +48,21 @@
 
 ---
 
-# `04` — GITHUB ANALYTICS
-
+<div align="center"><img src="./assets/hud-section-04-github-analytics.svg?v=20260820-1" width="950" alt="04 — GITHUB ANALYTICS" /></div>
 <div align="center">
 <img src="./assets/github-analytics-animated.svg" width="950" alt="Animated GitHub analytics" />
 </div>
 
 ---
 
-# `05` — DEVELOPMENT ACTIVITY
-
+<div align="center"><img src="./assets/hud-section-05-development-activity.svg?v=20260820-1" width="950" alt="05 — DEVELOPMENT ACTIVITY" /></div>
 <div align="center">
 <img src="./assets/development-activity.svg" width="950" alt="Animated development activity" />
 </div>
 
 ---
 
-# `06` — DEVELOPMENT LOOP
-
+<div align="center"><img src="./assets/hud-section-06-development-loop.svg?v=20260820-1" width="950" alt="06 — DEVELOPMENT LOOP" /></div>
 <div align="center">
 <img src="./assets/development-loop.svg?v=20260816-3" width="900" alt="Animated development loop" />
 </div>
@@ -78,40 +73,35 @@ IDEA → DESIGN → CODE → TEST → DEBUG → IMPROVE → DEPLOY → REPEAT
 
 ---
 
-# `07` — PROJECT DATABASE
-
+<div align="center"><img src="./assets/hud-section-07-project-database.svg?v=20260820-1" width="950" alt="07 — PROJECT DATABASE" /></div>
 <div align="center">
 <img src="./assets/project-database.svg" width="950" alt="Animated project database" />
 </div>
 
 ---
 
-# `08` — FREELANCE MODE
-
+<div align="center"><img src="./assets/hud-section-08-freelance-mode.svg?v=20260820-1" width="950" alt="08 — FREELANCE MODE" /></div>
 <div align="center">
 <img src="./assets/freelance-mode.svg" width="950" alt="Animated freelance mode" />
 </div>
 
 ---
 
-# `09` — LEARNING QUEUE
-
+<div align="center"><img src="./assets/hud-section-09-learning-queue.svg?v=20260820-1" width="950" alt="09 — LEARNING QUEUE" /></div>
 <div align="center">
 <img src="./assets/learning-queue.svg" width="950" alt="Animated learning queue" />
 </div>
 
 ---
 
-# `10` — ENGINEERING PHILOSOPHY
-
+<div align="center"><img src="./assets/hud-section-10-engineering-philosophy.svg?v=20260820-1" width="950" alt="10 — ENGINEERING PHILOSOPHY" /></div>
 <div align="center">
 <img src="./assets/engineering-philosophy.svg" width="950" alt="Animated engineering philosophy" />
 </div>
 
 ---
 
-# `11` — CONNECT
-
+<div align="center"><img src="./assets/hud-section-11-connect.svg?v=20260820-1" width="950" alt="11 — CONNECT" /></div>
 <div align="center">
 <img src="./assets/connect-panel.svg" width="950" alt="Animated connection panel" />
 
