@@ -10,6 +10,9 @@
 
 <img src="./assets/rohith-name.svg" width="720" alt="R0H1TH K P" />
 
+<br><br>
+<a href="https://rohithkp1901.github.io/rohithkp1901/game.html"><img src="https://img.shields.io/badge/🎮%20PLAY%20SNAKE%20GAME-00ff41?style=for-the-badge&labelColor=05080b&logo=gamepad&logoColor=00ff41" alt="Play Snake Game" /></a>
+
 ```text
 [ SYSTEM ONLINE ]  [ DEVELOPER MODE ]  [ FULL STACK ]
 ```
