@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rohith K P — Snake Game</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#05080b;color:#00ff41;font-family:"Courier New",monospace;display:grid;place-items:center;padding:20px}.wrap{width:min(520px,96vw);text-align:center;border:1px solid #00ff41;border-radius:12px;padding:20px;background:#07100a;box-shadow:0 0 30px #003b13}h1{font-size:20px;letter-spacing:4px;margin:4px 0 8px}p{color:#8da998;font-size:11px}canvas{width:min(420px,88vw);height:min(420px,88vw);border:1px solid #183523;background:#020503;display:block;margin:18px auto}.score{font-size:14px;margin:10px}.controls{display:grid;grid-template-columns:repeat(3,64px);gap:6px;justify-content:center}.controls button,.restart{background:#00ff41;color:#041006;border:0;padding:12px;font:inherit;font-weight:bold;cursor:pointer}.blank{visibility:hidden}.restart{margin-top:12px;width:204px}@media(min-width:700px){.controls{display:none}}</style>
+</head>
+<body>
+<div class="wrap">
+<h1>◉ ROHITH K P · SNAKE</h1>
+<p>Use Arrow Keys / WASD or the controls below.</p>
+<div class="score">SCORE: <span id="score">0</span> · BEST: <span id="best">0</span></div>
+<canvas id="game" width="420" height="420"></canvas>
+<div class="controls"><button class="blank"></button><button data-d="up">▲</button><button class="blank"></button><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button></div>
+<button class="restart" id="restart">RESTART GAME</button>
+</div>
+<script>
+const c=document.getElementById('game'),x=c.getContext('2d'),N=21,S=c.width/N;let snake,food,dir,next,score,over,best=Number(localStorage.snakeBest||0);document.getElementById('best').textContent=best;
+function reset(){snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];dir=next={x:1,y:0};score=0;over=false;place();document.getElementById('score').textContent=0;draw()}
+function place(){do{food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}while(snake.some(p=>p.x===food.x&&p.y===food.y))}
+function setdir(d){const m={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}}[d];if(m&&!(m.x===-dir.x&&m.y===-dir.y))next=m}
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowup','w'].includes(k))setdir('up');if(['arrowdown','s'].includes(k))setdir('down');if(['arrowleft','a'].includes(k))setdir('left');if(['arrowright','d'].includes(k))setdir('right');if(k==='enter'&&over)reset()});document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>setdir(b.dataset.d));document.getElementById('restart').onclick=reset;
+function tick(){if(over)return;dir=next;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};if(h.x<0||h.x>=N||h.y<0||h.y>=N||snake.some(p=>p.x===h.x&&p.y===h.y)){over=true;draw();return}snake.unshift(h);if(h.x===food.x&&h.y===food.y){score++;document.getElementById('score').textContent=score;if(score>best){best=score;localStorage.snakeBest=best;document.getElementById('best').textContent=best}place()}else snake.pop();draw()}
+function draw(){x.fillStyle='#020503';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#0a2413';for(let i=0;i<=N;i++){x.beginPath();x.moveTo(i*S,0);x.lineTo(i*S,c.height);x.stroke();x.beginPath();x.moveTo(0,i*S);x.lineTo(c.width,i*S);x.stroke()}x.fillStyle='#ff4d4d';x.fillRect(food.x*S+4,food.y*S+4,S-8,S-8);snake.forEach((p,i)=>{x.fillStyle=i?'#00aa2b':'#00ff41';x.fillRect(p.x*S+2,p.y*S+2,S-4,S-4)});if(over){x.fillStyle='rgba(0,0,0,.72)';x.fillRect(0,0,c.width,c.height);x.fillStyle='#00ff41';x.textAlign='center';x.font='bold 25px Courier New';x.fillText('GAME OVER',c.width/2,c.height/2-8);x.font='13px Courier New';x.fillText('PRESS ENTER OR RESTART',c.width/2,c.height/2+22)}}
+reset();setInterval(tick,115);
+</script>
+</body>
+</html>
